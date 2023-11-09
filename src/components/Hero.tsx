@@ -1,11 +1,17 @@
+"use client";
+
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { FiLogIn } from "react-icons/fi";
 
 export default function Hero() {
+  const { data, status } = useSession();
+
   return (
     <section className="container flex h-screen items-center justify-center px-4">
-      <div className="flex h-[75vh] w-full flex-col gap-16 sm:flex-row">
+      <div className="flex h-[75vh] w-full flex-col gap-5 sm:flex-row sm:gap-8 md:gap-16">
         <div className="relative h-full w-full bg-white/50 py-4 sm:shrink-[1] sm:grow-[2]">
           <Image
             src="https://images.pexels.com/photos/161275/santorini-travel-holidays-vacation-161275.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -27,10 +33,28 @@ export default function Hero() {
               mengeksplorasi ide, perspektif, dan pengalaman baru.
             </h2>
           </div>
-          <button className="btn flex items-center justify-center gap-2 rounded-full bg-gray-950 py-3 text-sm text-white transition-all hover:scale-105 sm:self-start sm:px-8 sm:py-4">
-            Login untuk menulis
-            <FiLogIn className="opacity-70" />
-          </button>
+
+          <div className="flex flex-col gap-4 sm:flex-row sm:self-start">
+            {
+              <Link
+                href={status === "unauthenticated" ? "/login" : "/write"}
+                className="btn flex items-center justify-center gap-2 rounded-full bg-gray-900 py-3 text-sm text-white transition-all hover:scale-105 sm:self-start sm:px-5 sm:py-3"
+              >
+                {status === "unauthenticated"
+                  ? "Login untuk menulis"
+                  : "Mulai menulis"}
+                <FiLogIn className="opacity-70" />
+              </Link>
+            }
+
+            <Link
+              href="#blog"
+              scroll
+              className="btn flex items-center justify-center gap-2 rounded-full border border-gray-950 bg-white py-3 text-sm text-gray-900 transition-all hover:scale-105 sm:self-start sm:px-5 sm:py-3"
+            >
+              Jelajahi Blog
+            </Link>
+          </div>
         </div>
       </div>
     </section>

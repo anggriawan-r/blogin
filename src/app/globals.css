@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -21,5 +25,17 @@ a {
 @layer components {
   .btn {
     @apply rounded-lg px-4 py-2 font-semibold text-white;
+  }
+  .softTextColor {
+    @apply text-black/70;
+  }
+  .editor-btn {
+    @apply flex h-10 w-10 items-center justify-center rounded-md p-2 text-lg text-gray-900/50;
+  }
+  .editor-btn:hover {
+    @apply bg-gray-200 transition-all;
+  }
+  .editor-btn:disabled {
+    @apply cursor-not-allowed text-gray-900/20;
   }
 }

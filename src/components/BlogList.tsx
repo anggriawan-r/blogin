@@ -17,7 +17,10 @@ export default async function BlogList() {
   const data: dataType[] = await getData();
 
   return (
-    <section className="container grid grid-cols-1 gap-x-6 gap-y-10 px-4 sm:grid-cols-2 md:grid-cols-3">
+    <section
+      id="blog"
+      className="container grid scroll-mt-36 grid-cols-1 gap-x-6 gap-y-10 px-4 sm:grid-cols-2 md:grid-cols-3"
+    >
       {data && data.map((item, index) => <Blog key={index} content={item} />)}
     </section>
   );

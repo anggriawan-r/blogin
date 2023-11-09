@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { FaBars } from "react-icons/fa";
@@ -8,8 +9,7 @@ import { FaXmark } from "react-icons/fa6";
 
 export default function Header() {
   const [open, setOpen] = useState<boolean>(false);
-
-  const auth: boolean = false;
+  const { data, status } = useSession();
 
   const handleOpen = (): void => {
     setOpen(!open);
@@ -25,9 +25,16 @@ export default function Header() {
     closed: { rotate: 0 },
   };
 
+  function logout(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.preventDefault();
+    signOut();
+  }
+
   return (
     <header className="fixed top-0 z-10 flex h-16 w-full items-center justify-between bg-white/80 px-4 backdrop-blur-lg">
-      <h1 className="text-2xl font-bold">blogin.</h1>
+      <Link href="/" className="text-2xl font-bold">
+        blogin.
+      </Link>
       <nav className="relative flex items-center gap-8">
         <motion.div animate={open ? "open" : "closed"} variants={variantsBar}>
           {!open ? (
@@ -39,27 +46,43 @@ export default function Header() {
         <AnimatePresence>
           {open && (
             <motion.div
-              className="borderBlack softTextColor absolute right-0 top-[250%] flex min-w-max flex-col items-center justify-center gap-4 rounded-md bg-white/90 px-4 py-4 backdrop-blur-lg"
+              className="z-999 absolute right-0 top-[250%] flex min-w-max flex-col items-center justify-center gap-4 rounded-md border border-black/10 bg-white/95 px-4 py-4 text-gray-900 shadow-lg backdrop-blur-lg"
               initial={{ opacity: 0, x: 50 }}
               animate={"open"}
               exit={"closed"}
               variants={variantsNav}
               transition={{ ease: "easeOut", duration: 0.2 }}
             >
-              <Link href="/" className="">
+              <Link href="/" className="" onClick={handleOpen}>
                 Home
               </Link>
-              <Link href="/blog" className="">
+              <Link href="/blog" className="" onClick={handleOpen}>
                 Blog
               </Link>
-              {!auth ? (
-                <Link href="/login" className="btn bg-gray-950">
+              {status === "unauthenticated" ? (
+                <Link
+                  href="/login"
+                  className="btn bg-gray-900"
+                  onClick={handleOpen}
+                >
                   Login
                 </Link>
               ) : (
-                <Link href="/logout" className="btn bg-gray-950">
-                  Logout
-                </Link>
+                <>
+                  <Link
+                    href="/write"
+                    className=""
+                    onClick={() => setOpen(false)}
+                  >
+                    Write
+                  </Link>
+                  <button
+                    onClick={(e) => logout(e)}
+                    className="btn bg-gray-900"
+                  >
+                    Logout
+                  </button>
+                </>
               )}
             </motion.div>
           )}
@@ -71,14 +94,26 @@ export default function Header() {
         <Link href="/blog" className="hidden font-semibold sm:block">
           Blog
         </Link>
-        {!auth ? (
-          <Link href="/login" className="btn hidden bg-gray-950 sm:block">
+        {status === "unauthenticated" ? (
+          <Link href="/login" className="btn hidden bg-gray-900 sm:block">
             Login
           </Link>
         ) : (
-          <Link href="/logout" className="btn hidden bg-gray-950 sm:block">
-            Logout
-          </Link>
+          <>
+            <Link
+              href="/write"
+              className="hidden font-semibold sm:block"
+              onClick={() => setOpen(false)}
+            >
+              Write
+            </Link>
+            <button
+              onClick={(e) => logout(e)}
+              className="btn hidden bg-gray-900 sm:block"
+            >
+              Logout
+            </button>
+          </>
         )}
       </nav>
     </header>
