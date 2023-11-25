@@ -1,8 +1,13 @@
-export type dataType = {
-  id: number;
+export type BlogListType = {
+  id: string;
+  createdAt: string;
+  slug: string;
   title: string;
+  abstract: string;
   body: string;
-  userId: string;
-  tags: string[];
-  reactions: number;
+  image?: string;
+  views: number;
+  userEmail: string;
+  user: string;
+  comments: string[];
 };

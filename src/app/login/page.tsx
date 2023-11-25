@@ -2,22 +2,28 @@
 
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import React from "react";
+import { useForm } from "react-hook-form";
 import { BsGoogle, BsGithub, BsFacebook } from "react-icons/bs";
 
-export default function LoginPage() {
-  const { data, status } = useSession();
-  const router = useRouter();
+type InputType = {
+  email: string;
+  password: string;
+};
 
-  function login(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.preventDefault();
-    signIn("google");
-  }
+export default function LoginPage() {
+  const { status } = useSession();
+
+  const { register, handleSubmit } = useForm<InputType>();
 
   if (status === "authenticated") {
-    router.push("/");
+    redirect("/");
   }
+
+  const onSubmit = (data: InputType) => {
+    console.log(data);
+  };
 
   return (
     <div className="container flex h-screen w-full items-center justify-center gap-0 px-4 sm:flex-row">
@@ -35,12 +41,15 @@ export default function LoginPage() {
           <div className="flex flex-col items-center justify-center gap-2">
             <button
               className="btn flex w-full items-center gap-4 bg-gray-900 text-sm"
-              onClick={(e) => login(e)}
+              onClick={() => signIn("google")}
             >
               <BsGoogle />
               Sign in with Google
             </button>
-            <button className="btn flex w-full items-center gap-4 bg-gray-900 text-sm">
+            <button
+              className="btn flex w-full items-center gap-4 bg-gray-900 text-sm"
+              onClick={() => signIn("github")}
+            >
               <BsGithub /> Sign in with Github
             </button>
             <button className="btn flex w-full items-center gap-4 bg-gray-900 text-sm">
@@ -54,15 +63,14 @@ export default function LoginPage() {
               <hr className="absolute top-7 -z-10 w-full border-[0.1px] border-black/10" />
             </div>
 
-            <form action="" className="flex flex-col">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
               <label htmlFor="email" className="mb-1 block">
                 Email
               </label>
               <input
                 type="text"
                 id="email"
-                name="email"
-                required
+                {...register("email")}
                 placeholder="Your email"
                 className="h-10 w-full rounded-md border-2 border-black/25 px-2 py-4"
               />
@@ -72,8 +80,7 @@ export default function LoginPage() {
               <input
                 type="password"
                 id="password"
-                name="password"
-                required
+                {...register("password")}
                 placeholder="Your password"
                 className="h-10 w-full rounded-md border-2 border-black/25 px-2 py-4"
               />

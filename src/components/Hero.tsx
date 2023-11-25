@@ -1,5 +1,6 @@
 "use client";
 
+import { Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,7 +8,31 @@ import React from "react";
 import { FiLogIn } from "react-icons/fi";
 
 export default function Hero() {
-  const { data, status } = useSession();
+  const { status } = useSession();
+
+  function writeButton() {
+    if (status === "loading") {
+      return (
+        <div className="animate-spin">
+          <Loader2 />
+        </div>
+      );
+    } else if (status === "unauthenticated") {
+      return (
+        <>
+          Login untuk menulis
+          <FiLogIn className="opacity-70" />
+        </>
+      );
+    } else {
+      return (
+        <>
+          Mulai menulis
+          <FiLogIn className="opacity-70" />
+        </>
+      );
+    }
+  }
 
   return (
     <section className="container flex h-screen items-center justify-center px-4">
@@ -40,10 +65,7 @@ export default function Hero() {
                 href={status === "unauthenticated" ? "/login" : "/write"}
                 className="btn flex items-center justify-center gap-2 rounded-full bg-gray-900 py-3 text-sm text-white transition-all hover:scale-105 sm:self-start sm:px-5 sm:py-3"
               >
-                {status === "unauthenticated"
-                  ? "Login untuk menulis"
-                  : "Mulai menulis"}
-                <FiLogIn className="opacity-70" />
+                {writeButton()}
               </Link>
             }
 

@@ -1,15 +1,15 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { Loader2, Menu, X } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import { FaBars } from "react-icons/fa";
-import { FaXmark } from "react-icons/fa6";
 
 export default function Header() {
   const [open, setOpen] = useState<boolean>(false);
-  const { data, status } = useSession();
+  const { data: session, status } = useSession();
 
   const handleOpen = (): void => {
     setOpen(!open);
@@ -30,17 +30,54 @@ export default function Header() {
     signOut();
   }
 
+  function AuthButton() {
+    if (status === "loading") {
+      return (
+        <Link href="/login" className="btn hidden bg-gray-900 sm:block">
+          <div className="animate-spin">
+            <Loader2 />
+          </div>
+        </Link>
+      );
+    } else if (status === "unauthenticated") {
+      return (
+        <Link href="/login" className="btn hidden bg-gray-900 sm:block">
+          Login
+        </Link>
+      );
+    } else {
+      return (
+        <button
+          onClick={(e) => logout(e)}
+          className="btn hidden bg-gray-900 sm:block"
+        >
+          Logout
+        </button>
+      );
+    }
+  }
+
   return (
     <header className="fixed top-0 z-10 flex h-16 w-full items-center justify-between bg-white/80 px-4 backdrop-blur-lg">
       <Link href="/" className="text-2xl font-bold">
         blogin.
       </Link>
-      <nav className="relative flex items-center gap-8">
+      <nav className="relative flex items-center gap-4 sm:gap-8">
+        {status === "authenticated" && (
+          <div className="relative h-8 w-8 sm:hidden">
+            <Image
+              src={session?.user?.image as string}
+              alt="profile picture"
+              fill
+              className="rounded-full object-cover"
+            />
+          </div>
+        )}
         <motion.div animate={open ? "open" : "closed"} variants={variantsBar}>
           {!open ? (
-            <FaBars onClick={handleOpen} className="h-6 w-6 sm:hidden" />
+            <Menu onClick={handleOpen} className="h-6 w-6 sm:hidden" />
           ) : (
-            <FaXmark onClick={handleOpen} className="h-6 w-6 sm:hidden" />
+            <X onClick={handleOpen} className="h-6 w-6 sm:hidden" />
           )}
         </motion.div>
         <AnimatePresence>
@@ -59,6 +96,7 @@ export default function Header() {
               <Link href="/blog" className="" onClick={handleOpen}>
                 Blog
               </Link>
+
               {status === "unauthenticated" ? (
                 <Link
                   href="/login"
@@ -76,6 +114,7 @@ export default function Header() {
                   >
                     Write
                   </Link>
+
                   <button
                     onClick={(e) => logout(e)}
                     className="btn bg-gray-900"
@@ -94,11 +133,7 @@ export default function Header() {
         <Link href="/blog" className="hidden font-semibold sm:block">
           Blog
         </Link>
-        {status === "unauthenticated" ? (
-          <Link href="/login" className="btn hidden bg-gray-900 sm:block">
-            Login
-          </Link>
-        ) : (
+        {status === "authenticated" && (
           <>
             <Link
               href="/write"
@@ -107,14 +142,17 @@ export default function Header() {
             >
               Write
             </Link>
-            <button
-              onClick={(e) => logout(e)}
-              className="btn hidden bg-gray-900 sm:block"
-            >
-              Logout
-            </button>
+            <div className="relative hidden h-8 w-8 sm:block">
+              <Image
+                src={session.user?.image as string}
+                alt="profile picture"
+                fill
+                className="rounded-full object-cover"
+              />
+            </div>
           </>
         )}
+        <AuthButton />
       </nav>
     </header>
   );
