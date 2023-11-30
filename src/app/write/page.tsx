@@ -1,60 +1,143 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import TipTap from "@/components/tiptap/TipTap";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-import parse from "html-react-parser";
+import { redirect, useRouter } from "next/navigation";
+import { ImageIcon } from "lucide-react";
+import { Toaster } from "react-hot-toast";
+import Image from "next/image";
+import slugify from "slugify";
+import { uploadBlog } from "./_lib/uploadBlog";
 
 type InputType = {
   title: string;
   abstract: string;
   body: string;
+  image?: string;
 };
 
 export default function WritePage() {
-  const [data, setData] = useState<InputType>();
+  const [file, setFile] = useState<File>();
+  const [media, setMedia] = useState<string>("");
+  const [slug, setSlug] = useState<string>();
+  const [isImageAdded, setIsImageAdded] = useState<boolean>(false);
   const { status } = useSession();
+  const router = useRouter();
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
-  } = useForm<InputType>();
+    formState: { errors, isDirty, isSubmitSuccessful },
+  } = useForm<InputType>({
+    defaultValues: {
+      title: "",
+      abstract: "",
+      body: "",
+    },
+  });
 
-  const onSubmit = (data: InputType) => {
-    console.log(data);
-    setData(data);
-  };
-
-  if (status === "unauthenticated") {
+  if (status === "unauthenticated" && isSubmitSuccessful) {
     redirect("/login");
   }
 
+  const updateImageDisplay = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target?.files?.length === 0) {
+      setIsImageAdded(false);
+    } else if (e.target.files !== (null && undefined)) {
+      setFile(e.target.files[0]);
+      setMedia(URL.createObjectURL(e.target.files[0]));
+      setIsImageAdded(true);
+    }
+  };
+
+  const onSubmit: SubmitHandler<InputType> = async (data) => {
+    await uploadBlog(file, setSlug, {
+      body: data.body,
+      title: data.title,
+      abstract: data.abstract,
+      slug: slugify(data.title).toLowerCase(),
+    });
+
+    // router.push(`/blog/${slug}`);
+  };
+
+  if (slug !== undefined) {
+    redirect(`/blog/${slug}`);
+  }
+
   return (
-    <section className="container my-[64px] flex w-full flex-col items-center justify-center lg:max-w-screen-lg">
+    <section className="container my-[64px] flex w-full flex-col items-center justify-center px-4 lg:max-w-screen-lg">
+      <Toaster />
+
       <div className="my-12 flex w-full flex-col gap-8 self-start">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
+          <input
+            type="file"
+            accept=".jpg, .jpeg, .png, .webp"
+            {...register("image", { required: "Image is required" })}
+            id="image"
+            onChange={(e) => updateImageDisplay(e)}
+            className="hidden"
+          />
+          {!isImageAdded ? (
+            <div className="flex w-full flex-col items-center justify-center">
+              <label
+                htmlFor="image"
+                className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-black/10 py-2 text-gray-700 transition-all hover:bg-black/20 md:py-3"
+              >
+                <ImageIcon />
+                Add Image
+              </label>
+              {errors.image && (
+                <p className="ml-2 self-start text-red-500">
+                  {errors.image.message}
+                </p>
+              )}
+            </div>
+          ) : (
+            <div className="relative h-[100px] w-full sm:h-[250px]">
+              {media && (
+                <>
+                  <Image
+                    src={media}
+                    alt="blog image"
+                    fill
+                    className="absolute rounded-lg object-cover"
+                  />
+                  <label
+                    htmlFor="image"
+                    className="absolute right-2 top-2 z-10 cursor-pointer rounded-lg bg-black/40 px-2 py-1 text-white transition hover:bg-black"
+                  >
+                    Change image
+                  </label>
+                </>
+              )}
+            </div>
+          )}
+
           <TextareaAutosize
             {...register("title", { required: "Title is required" })}
             placeholder="Title..."
+            id="title"
             maxRows={4}
-            className="w-full resize-none overscroll-contain border-none p-2 text-5xl font-bold placeholder-gray-300 outline-none"
+            className="w-full resize-none overscroll-contain border-none p-2 text-2xl font-bold placeholder-gray-300 outline-none sm:text-3xl md:text-5xl"
           />
-          {errors.title && (
+          {errors.title && isDirty && (
             <p className="-mt-6 ml-2 text-red-500">{errors.title.message}</p>
           )}
 
           <TextareaAutosize
-            {...register("abstract", { required: "Abstract is required" })}
-            placeholder="Abstract..."
+            {...register("abstract", { required: "Introduction is required" })}
+            placeholder="Introduction..."
             maxRows={20}
-            className="prose w-full max-w-none resize-none overscroll-contain border-none p-2 placeholder-gray-400 outline-none lg:prose-lg"
+            id="introduction"
+            className="prose w-full max-w-none resize-none overscroll-contain border-none p-2 leading-tight placeholder-gray-400 outline-none lg:prose-lg"
           />
-          {errors.abstract && (
+          {errors.abstract && isDirty && (
             <p className="-mt-6 ml-2 text-red-500">{errors.abstract.message}</p>
           )}
 
@@ -64,10 +147,9 @@ export default function WritePage() {
             )}
             control={control}
             name="body"
-            defaultValue=""
             rules={{ required: "Body article is required" }}
           />
-          {errors.body && (
+          {errors.body && isDirty && (
             <p className="-mt-6 text-red-500">{errors.body.message}</p>
           )}
           <button
@@ -78,10 +160,6 @@ export default function WritePage() {
           </button>
         </form>
       </div>
-
-      {data && (
-        <div className="prose prose-sm lg:prose-lg">{parse(data.body)}</div>
-      )}
     </section>
   );
 }

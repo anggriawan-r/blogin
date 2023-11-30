@@ -16,7 +16,7 @@ export default function EditorBar({ editor }: { editor: Editor }) {
   }
 
   return (
-    <div className="sticky top-[72px] z-10 flex items-center gap-2 rounded-xl border border-black/10 bg-white/90 p-2 backdrop-blur-lg">
+    <div className="sticky top-[72px] z-10 flex flex-wrap items-center gap-2 rounded-xl border border-black/10 bg-white/90 p-2 backdrop-blur-lg">
       <button
         onClick={(e) => {
           editor.chain().focus().toggleBold().run();

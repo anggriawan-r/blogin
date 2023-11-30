@@ -8,6 +8,12 @@ export type BlogListType = {
   image?: string;
   views: number;
   userEmail: string;
-  user: string;
   comments: string[];
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    emailVerfied?: string;
+    image?: string;
+  };
 };

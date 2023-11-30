@@ -52,7 +52,10 @@ export default function LoginPage() {
             >
               <BsGithub /> Sign in with Github
             </button>
-            <button className="btn flex w-full items-center gap-4 bg-gray-900 text-sm">
+            <button
+              className="btn flex w-full items-center gap-4 bg-gray-900 text-sm"
+              onClick={() => signIn("facebook")}
+            >
               <BsFacebook /> Sign in with Facebook
             </button>
 
