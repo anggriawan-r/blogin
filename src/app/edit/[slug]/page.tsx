@@ -9,8 +9,6 @@ import { redirect } from "next/navigation";
 import { ImageIcon } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 import Image from "next/image";
-import slugify from "slugify";
-import { uploadBlog } from "./_lib/uploadBlog";
 import useSWR from "swr";
 
 type InputType = {
