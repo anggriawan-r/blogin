@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Blog from "./_components/Blog";
 import { BlogListType } from "@/utils/types";
 import BlogSkeleton from "../../components/_skeleton/BlogSkeleton";
@@ -27,16 +27,13 @@ export default function MyBlog() {
     redirect("/login");
   }
 
-  const { data, isLoading } = useSWR(
-    `${process.env.NEXTAUTH_URL}/api/myblog`,
-    fetcher,
-  );
+  const { data, isLoading } = useSWR("/api/myblog", fetcher);
 
   return (
     <section id="blog" className="container my-32 flex flex-col gap-16">
       <h1 className="text-center text-3xl font-bold">My Blogs</h1>
       <div className="grid grid-cols-1 gap-x-6 gap-y-16 px-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-x-12">
-        {!isLoading && status !== "loading" ? (
+        {!isLoading ? (
           data.Post.map((post: BlogListType) => (
             <Blog key={post.id} content={post} name={data.name} />
           ))

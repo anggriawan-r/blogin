@@ -63,7 +63,7 @@ export default function WritePage() {
   };
 
   if (slug !== undefined) {
-    redirect(`${process.env.NEXTAUTH_URL}/blog/${slug}`);
+    redirect(`/blog/${slug}`);
   }
 
   return (

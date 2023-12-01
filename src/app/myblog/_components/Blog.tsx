@@ -37,7 +37,7 @@ export default function Blog({
         </div>
       </Link>
 
-      <div className="prose prose-sm w-full sm:prose-base prose-headings:my-2 prose-p:m-0">
+      <div className="prose prose-sm w-full lg:prose-base prose-headings:my-2 prose-p:m-0">
         <p className="softTextColor leading-normal">{`${name} \u2027 ${month} ${day}, ${year}`}</p>
         <Link href={`/blog/${content.slug}`} className="no-underline">
           <h2 className="line-clamp-3 break-words leading-tight">

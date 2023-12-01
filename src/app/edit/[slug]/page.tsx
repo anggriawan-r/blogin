@@ -39,10 +39,7 @@ export default function EditPage({ params }: { params: { slug: string } }) {
   const [isImageAdded, setIsImageAdded] = useState<boolean>(true);
   const { status } = useSession();
 
-  const { data, isLoading } = useSWR(
-    `${process.env.NEXTAUTH_URL}/api/edit/${params.slug}`,
-    getPost,
-  );
+  const { data, isLoading } = useSWR(`/api/edit/${params.slug}`, getPost);
 
   const {
     register,
