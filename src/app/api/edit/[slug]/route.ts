@@ -10,7 +10,7 @@ export const GET = async (
 
   try {
     const post = await prisma.post.findUnique({
-      where: { slug },
+      where: { slug: slug },
     });
     return new NextResponse(JSON.stringify(post), { status: 200 });
   } catch (error) {
@@ -21,19 +21,23 @@ export const GET = async (
   }
 };
 
-export const POST = async (req: NextRequest) => {
-  const session = await getAuthSession();
-
-  if (!session) {
-    return new NextResponse(JSON.stringify({ message: "Not Authenticated!" }), {
-      status: 401,
-    });
-  }
+export const POST = async (
+  req: NextRequest,
+  { params }: { params: { slug: string } },
+) => {
+  const { slug } = params;
 
   try {
     const body = await req.json();
-
-    return new NextResponse(JSON.stringify(null), { status: 200 });
+    const post = await prisma.post.update({
+      where: {
+        slug: slug,
+      },
+      data: {
+        ...body,
+      },
+    });
+    return new NextResponse(JSON.stringify(post), { status: 200 });
   } catch (err) {
     return new NextResponse(
       JSON.stringify({ message: "Something went wrong!" }),

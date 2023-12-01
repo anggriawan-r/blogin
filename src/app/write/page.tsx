@@ -40,7 +40,7 @@ export default function WritePage() {
     },
   });
 
-  if (status === "unauthenticated" && isSubmitSuccessful) {
+  if (status === "unauthenticated") {
     redirect("/login");
   }
 

@@ -6,7 +6,6 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import toast from "react-hot-toast";
-import slugify from "slugify";
 
 type InputType = {
   title: string;
@@ -20,8 +19,8 @@ const storage = getStorage(app);
 
 export const uploadBlog = async (
   file: File | undefined,
-  setSlug: (T: string) => void,
-  data: InputType,
+  setUrl: (T: string) => void,
+  fetcher: () => void,
 ) => {
   if (file !== undefined) {
     const name = new Date().getTime() + file.name;
@@ -37,25 +36,30 @@ export const uploadBlog = async (
       () => {
         toast.success("Image uploaded");
         getDownloadURL(uplaodTask.snapshot.ref).then((downloadUrl: string) => {
-          fetcher(data, downloadUrl).then((res) => setSlug(res.slug));
+          fetcher();
         });
       },
     );
   }
 };
 
-const fetcher = async (data: InputType, downloadUrl: string) => {
-  const res = await fetch("/api/post", {
-    method: "POST",
-    body: JSON.stringify({
-      title: data.title,
-      body: data.body,
-      abstract: data.abstract,
-      image: downloadUrl,
-      slug: slugify(data.title).toLowerCase(),
-    }),
-  });
+// const fetcher = async (
+//   data: InputType,
+//   downloadUrl: string,
+//   oldSlug: string,
+// ) => {
+//   const res = await fetch(`/api/edit/${oldSlug}`, {
+//     method: "POST",
+//     body: JSON.stringify({
+//       title: data.title,
+//       body: data.body,
+//       abstract: data.abstract,
+//       image: downloadUrl,
+//       slug: slugify(data.title).toLowerCase(),
+//       oldSlug: oldSlug,
+//     }),
+//   });
 
-  const slug = await res.json();
-  return slug;
-};
+//   const slug = await res.json();
+//   return slug;
+// };
