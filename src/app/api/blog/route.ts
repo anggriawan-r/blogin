@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 export const GET = async () => {
   try {
     const posts = await prisma.post.findMany({
+      take: 6,
       include: {
         user: true,
       },
