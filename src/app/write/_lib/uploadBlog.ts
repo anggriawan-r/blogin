@@ -45,7 +45,7 @@ export const uploadBlog = async (
 };
 
 const fetcher = async (data: InputType, downloadUrl: string) => {
-  const res = await fetch("/api/post", {
+  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/post`, {
     method: "POST",
     body: JSON.stringify({
       title: data.title,

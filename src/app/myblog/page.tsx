@@ -27,7 +27,10 @@ export default function MyBlog() {
     redirect("/login");
   }
 
-  const { data, isLoading } = useSWR("/api/myblog", fetcher);
+  const { data, isLoading } = useSWR(
+    `${process.env.NEXTAUTH_URL}/api/myblog`,
+    fetcher,
+  );
 
   return (
     <section id="blog" className="container my-32 flex flex-col gap-16">

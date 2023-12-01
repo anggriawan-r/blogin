@@ -4,7 +4,7 @@ import { BlogListType } from "@/utils/types";
 import Image from "next/image";
 
 const getPost = async (slug: string) => {
-  const res = await fetch(`http://localhost:3000/api/blog/${slug}`, {
+  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/blog/${slug}`, {
     cache: "no-store",
   });
 

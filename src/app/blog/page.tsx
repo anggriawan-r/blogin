@@ -4,7 +4,7 @@ import { BlogListType } from "@/utils/types";
 import BlogSkeleton from "../../components/_skeleton/BlogSkeleton";
 
 async function Blogs() {
-  const res = await fetch("http://localhost:3000/api/blog", {
+  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/blog`, {
     cache: "no-store",
   });
 

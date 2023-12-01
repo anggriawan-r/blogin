@@ -5,7 +5,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import TipTap from "@/components/tiptap/TipTap";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { ImageIcon } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 import Image from "next/image";
@@ -25,13 +25,12 @@ export default function WritePage() {
   const [slug, setSlug] = useState<string>();
   const [isImageAdded, setIsImageAdded] = useState<boolean>(false);
   const { status } = useSession();
-  const router = useRouter();
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors, isDirty, isSubmitSuccessful },
+    formState: { errors, isDirty },
   } = useForm<InputType>({
     defaultValues: {
       title: "",
@@ -61,12 +60,10 @@ export default function WritePage() {
       abstract: data.abstract,
       slug: slugify(data.title).toLowerCase(),
     });
-
-    // router.push(`/blog/${slug}`);
   };
 
   if (slug !== undefined) {
-    redirect(`/blog/${slug}`);
+    redirect(`${process.env.NEXTAUTH_URL}/blog/${slug}`);
   }
 
   return (

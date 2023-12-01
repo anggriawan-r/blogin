@@ -40,7 +40,7 @@ export default function EditPage({ params }: { params: { slug: string } }) {
   const { status } = useSession();
 
   const { data, isLoading } = useSWR(
-    `http://localhost:3000/api/edit/${params.slug}`,
+    `${process.env.NEXTAUTH_URL}/api/edit/${params.slug}`,
     getPost,
   );
 
