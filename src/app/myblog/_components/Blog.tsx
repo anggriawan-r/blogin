@@ -20,22 +20,22 @@ export default function Blog({
 
   return (
     <div className="flex h-max flex-col gap-4">
-      <div className="relative block h-[12rem] w-full">
-        <Link href={`/blog/${content.slug}`}>
+      <Link href={`/blog/${content.slug}`}>
+        <div className="relative block h-[12rem] w-full">
           <Image
             src={content.image as string}
             alt="Hero Image"
             quality={90}
             fill
-            className="rounded-lg object-cover"
+            className="absolute rounded-lg object-cover"
           />
-        </Link>
-        <Link href={`/edit/${content.slug}`}>
-          <button className="absolute right-2 top-2 z-10 rounded-md bg-black/40 px-4 py-2 text-white transition hover:bg-black">
-            Edit
-          </button>
-        </Link>
-      </div>
+          <Link href={`/edit/${content.slug}`}>
+            <button className="absolute right-2 top-2 z-10 rounded-md bg-black/40 px-4 py-2 text-white transition hover:bg-black">
+              Edit
+            </button>
+          </Link>
+        </div>
+      </Link>
 
       <div className="prose prose-sm w-full lg:prose-base prose-headings:my-2 prose-p:m-0">
         <p className="softTextColor leading-normal">{`${name} \u2027 ${month} ${day}, ${year}`}</p>

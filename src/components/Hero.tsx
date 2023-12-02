@@ -43,7 +43,7 @@ export default function Hero() {
             alt="Hero Image"
             quality={90}
             fill
-            className="rounded-lg object-cover"
+            className="absolute rounded-lg object-cover"
           />
         </div>
 

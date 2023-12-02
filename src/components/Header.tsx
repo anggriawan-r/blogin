@@ -57,7 +57,7 @@ export default function Header() {
                 src={session.user?.image as string}
                 alt="profile picture"
                 fill
-                className="rounded-full object-cover"
+                className="absolute rounded-full object-cover"
               />
             </div>
           </Link>
