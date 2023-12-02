@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import Blog from "./_components/Blog";
 import { BlogListType } from "@/utils/types";
 import BlogSkeleton from "../../components/_skeleton/BlogSkeleton";

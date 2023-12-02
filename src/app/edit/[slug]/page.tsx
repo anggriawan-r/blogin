@@ -10,13 +10,10 @@ import { ImageIcon } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import useSWR from "swr";
-
-type InputType = {
-  title: string;
-  abstract: string;
-  body: string;
-  image?: string;
-};
+import { uploadImage } from "./_lib/uploadImage";
+import slugify from "slugify";
+import { InputType } from "./_lib/type";
+import { fetcher } from "./_lib/fetcher";
 
 async function getPost(url: string) {
   const res = await fetch(url);
@@ -31,12 +28,15 @@ async function getPost(url: string) {
 
 export default function EditPage({ params }: { params: { slug: string } }) {
   const [file, setFile] = useState<File>();
-  const [media, setMedia] = useState<string>("");
-  const [url, setUrl] = useState<string>("");
+  const [media, setMedia] = useState<string>();
+  const [url, setUrl] = useState<string>();
   const [slug, setSlug] = useState<string>();
+  // const [] = useState<boolean>(false)
   const [isImageAdded, setIsImageAdded] = useState<boolean>(true);
   const { status } = useSession();
-
+  if (status === "unauthenticated") {
+    redirect("/login");
+  }
   const { data, isLoading } = useSWR(`/api/edit/${params.slug}`, getPost);
 
   const {
@@ -44,16 +44,20 @@ export default function EditPage({ params }: { params: { slug: string } }) {
     handleSubmit,
     control,
     reset,
-    formState: { errors, isDirty },
+    getValues,
+    formState: { errors, isDirty, isSubmitSuccessful },
   } = useForm<InputType>({
     defaultValues: {
       title: "",
       abstract: "",
       body: "",
+      image: undefined,
+      urlFromDB: undefined,
     },
   });
 
   useEffect(() => {
+    console.log("Rendering data");
     if (!isLoading) {
       setMedia(data.image);
       reset({
@@ -62,11 +66,27 @@ export default function EditPage({ params }: { params: { slug: string } }) {
         body: data.body,
       });
     }
-  }, [reset, isLoading, data]);
+  }, [isLoading]);
 
-  if (status === "unauthenticated") {
-    redirect("/login");
-  }
+  useEffect(() => {
+    if (!isLoading) {
+      console.log("Updating...");
+      fetcher(
+        {
+          title: getValues("title"),
+          abstract: getValues("abstract"),
+          body: getValues("body"),
+          slug: slugify(getValues("title").toLowerCase(), {
+            remove: /[*+~.()'"!:@]/g,
+          }),
+        },
+        url as string,
+        data.slug,
+      ).then((res) => setSlug(res.slug));
+    }
+  }, [isSubmitSuccessful]);
+
+  if (slug !== undefined) redirect(`/blog/${slug}`);
 
   const updateImageDisplay = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target?.files?.length === 0) {
@@ -78,11 +98,10 @@ export default function EditPage({ params }: { params: { slug: string } }) {
     }
   };
 
-  const onSubmit: SubmitHandler<InputType> = async (formData) => {};
-
-  if (slug !== undefined) {
-    redirect(`/blog/${slug}`);
-  }
+  const onSubmit: SubmitHandler<InputType> = () => {
+    console.log("Submitting");
+    uploadImage(file, setUrl, media);
+  };
 
   return (
     <section className="container my-[64px] flex w-full flex-col items-center justify-center px-4 lg:max-w-screen-lg">
@@ -97,7 +116,9 @@ export default function EditPage({ params }: { params: { slug: string } }) {
             <input
               type="file"
               accept=".jpg, .jpeg, .png, .webp"
-              {...register("image", { required: "Image is required" })}
+              {...register("image", {
+                required: false,
+              })}
               id="image"
               onChange={(e) => updateImageDisplay(e)}
               className="hidden"

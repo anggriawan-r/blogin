@@ -34,7 +34,11 @@ export const POST = async (
         slug: slug,
       },
       data: {
-        ...body,
+        title: body.title,
+        abstract: body.abstract,
+        body: body.body,
+        image: body.image,
+        slug: body.slug,
       },
     });
     return new NextResponse(JSON.stringify(post), { status: 200 });

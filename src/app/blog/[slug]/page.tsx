@@ -1,26 +1,16 @@
-import React from "react";
+import React, { Suspense } from "react";
 import parse from "html-react-parser";
 import { BlogListType } from "@/utils/types";
 import Image from "next/image";
-
-const getPost = async (slug: string) => {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/blog/${slug}`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
+import { getBlog } from "../_lib/getBlog";
+import BlogImageSkeleton from "../_components/BlogImageSkeleton";
 
 export default async function PostPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const data: BlogListType = await getPost(params.slug);
+  const data: BlogListType = await getBlog(params.slug);
 
   const date = new Date(data.createdAt);
   const month = new Date(data.createdAt).toLocaleString("en-US", {
@@ -33,16 +23,17 @@ export default async function PostPage({
   return (
     <section className="container my-20 flex flex-col items-center justify-center gap-10 px-4 md:max-w-screen-md">
       <div className="flex w-full flex-col gap-4">
-        {data.image && (
-          <div className="relative h-[25vh] w-full sm:h-[40vh]">
+        <div className="relative h-[25vh] w-full sm:h-[40vh]">
+          <Suspense fallback={<BlogImageSkeleton />}>
             <Image
-              src={data.image}
+              src={data.image as string}
               alt="blog image"
               fill
               className="absolute rounded-lg object-cover"
             />
-          </div>
-        )}
+          </Suspense>
+        </div>
+
         <div className="flex items-center gap-4">
           <div className="relative h-10 w-10">
             {data.user.image && (

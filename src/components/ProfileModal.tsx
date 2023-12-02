@@ -63,7 +63,7 @@ export default function ProfileModal({
               </Link>
               <Link href="/myblog" onClick={() => setShowModal(false)}>
                 <li className="rounded-md px-6 py-4 transition-all hover:bg-gray-200 hover:text-gray-900">
-                  My Blog
+                  My Blogs
                 </li>
               </Link>
             </ul>
