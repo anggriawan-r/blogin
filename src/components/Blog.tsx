@@ -14,31 +14,17 @@ export default function Blog({ content }: { content: BlogListType }) {
 
   return (
     <div className="flex h-max flex-col gap-4">
-      {content.image ? (
-        <Link href={`/blog/${content.slug}`}>
-          <div className="relative block h-[12rem] w-full">
-            <Image
-              src={content.image}
-              alt="Hero Image"
-              quality={90}
-              fill
-              className="rounded-lg object-cover"
-            />
-          </div>
-        </Link>
-      ) : (
-        <Link href={`/blog/${content.slug}`}>
-          <div className="relative block h-[12rem] w-full">
-            <Image
-              src="https://images.pexels.com/photos/161275/santorini-travel-holidays-vacation-161275.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              alt="Hero Image"
-              quality={90}
-              fill
-              className="rounded-lg object-cover"
-            />
-          </div>
-        </Link>
-      )}
+      <Link href={`/blog/${content.slug}`} as={"image"}>
+        <div className="relative block h-[12rem] w-full">
+          <Image
+            src={content.image as string}
+            alt="Hero Image"
+            quality={90}
+            fill
+            className="rounded-lg object-cover"
+          />
+        </div>
+      </Link>
 
       <div className="prose prose-sm w-full sm:prose-base prose-headings:my-2 prose-p:m-0">
         <p className="softTextColor leading-normal">{`${content.user.name} \u2027 ${month} ${day}, ${year}`}</p>
