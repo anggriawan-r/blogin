@@ -1,3 +1,5 @@
+import { delay } from "@/utils/delay";
+
 export async function getBlog(slug: string) {
   const res = await fetch(`${process.env.NEXTAUTH_URL}/api/blog/${slug}`, {
     cache: "no-cache",

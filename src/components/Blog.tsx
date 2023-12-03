@@ -14,8 +14,8 @@ export default function Blog({ content }: { content: BlogListType }) {
 
   return (
     <div className="flex h-max flex-col gap-4">
-      <Link href={`/blog/${content.slug}`}>
-        <div className="relative block h-[12rem] w-full overflow-hidden rounded-lg">
+      <div className="relative block h-[12rem] w-full overflow-hidden rounded-lg">
+        <Link href={`/blog/${content.slug}`}>
           <Image
             src={content.image as string}
             alt="Hero Image"
@@ -23,8 +23,8 @@ export default function Blog({ content }: { content: BlogListType }) {
             fill
             className="absolute object-cover transition duration-500 ease-out hover:scale-110"
           />
-        </div>
-      </Link>
+        </Link>
+      </div>
 
       <div className="prose prose-sm w-full sm:prose-base prose-headings:my-2 prose-p:m-0">
         <p className="softTextColor text-sm leading-normal">{`${content.user.name} \u2027 ${month} ${day}, ${year}`}</p>

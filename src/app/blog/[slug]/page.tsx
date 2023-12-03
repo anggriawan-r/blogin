@@ -24,14 +24,12 @@ export default async function PostPage({
     <section className="container my-20 flex flex-col items-center justify-center gap-10 px-4 md:max-w-screen-md">
       <div className="flex w-full flex-col gap-4">
         <div className="relative h-[25vh] w-full sm:h-[40vh]">
-          <Suspense fallback={<BlogImageSkeleton />}>
-            <Image
-              src={data.image as string}
-              alt="blog image"
-              fill
-              className="absolute rounded-lg object-cover"
-            />
-          </Suspense>
+          <Image
+            src={data.image as string}
+            alt="blog image"
+            fill
+            className="absolute rounded-lg object-cover"
+          />
         </div>
 
         <div className="flex items-center gap-4">
