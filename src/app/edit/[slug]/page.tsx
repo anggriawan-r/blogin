@@ -7,7 +7,6 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { ImageIcon, Loader2 } from "lucide-react";
-import { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import useSWR from "swr";
 import { uploadImage } from "@/utils/uploadImage";
@@ -30,6 +29,7 @@ async function getPost(url: string) {
 export default function EditPage({ params }: { params: { slug: string } }) {
   const [file, setFile] = useState<File>();
   const [media, setMedia] = useState<string>();
+  const [oldImage, setOldImage] = useState<string>();
   const [url, setUrl] = useState<string>();
   const [slug, setSlug] = useState<string>();
   const [isImageAdded, setIsImageAdded] = useState<boolean>(true);
@@ -52,13 +52,13 @@ export default function EditPage({ params }: { params: { slug: string } }) {
       abstract: "",
       body: "",
       image: undefined,
-      urlFromDB: undefined,
     },
   });
 
   useEffect(() => {
     console.log("Rendering data");
     if (!isLoading) {
+      setOldImage(data.image);
       setMedia(data.image);
       reset({
         title: data.title,
@@ -66,7 +66,7 @@ export default function EditPage({ params }: { params: { slug: string } }) {
         body: data.body,
       });
     }
-  }, [isLoading, url]);
+  }, [isLoading]);
 
   useEffect(() => {
     if (!isLoading && url) {
@@ -82,12 +82,17 @@ export default function EditPage({ params }: { params: { slug: string } }) {
         },
         url,
         data.slug,
-      ).then((res) => setSlug(res.slug));
-      deleteImage(data.image);
+      ).then((res) => {
+        setSlug(res.slug);
+      });
+      console.log("Update success!");
     }
-  }, [isSubmitSuccessful]);
+  }, [isSubmitSuccessful, url]);
 
-  if (slug !== undefined) redirect(`/blog/${slug}`);
+  if (slug !== undefined) {
+    if (url !== oldImage) deleteImage(oldImage as string);
+    redirect(`/blog/${slug}`);
+  }
 
   const updateImageDisplay = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target?.files?.length === 0) {
@@ -106,8 +111,6 @@ export default function EditPage({ params }: { params: { slug: string } }) {
 
   return (
     <section className="container my-[64px] flex w-full flex-col items-center justify-center px-4 lg:max-w-screen-lg">
-      <Toaster />
-
       {!isLoading && (
         <div className="my-12 flex w-full flex-col gap-8 self-start">
           <form
@@ -119,6 +122,7 @@ export default function EditPage({ params }: { params: { slug: string } }) {
               accept=".jpg, .jpeg, .png, .webp"
               {...register("image")}
               id="image"
+              defaultValue={undefined}
               onChange={(e) => updateImageDisplay(e)}
               className="hidden"
             />

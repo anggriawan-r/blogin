@@ -1,11 +1,20 @@
+import { getAuthSession } from "@/utils/auth";
 import prisma from "@/utils/connect";
-import { deleteImage } from "@/utils/deleteImage";
 import { NextRequest, NextResponse } from "next/server";
 
 export const DELETE = async (
   req: NextRequest,
   { params }: { params: { slug: string } },
 ) => {
+  const session = getAuthSession();
+
+  if (!session) {
+    return new NextResponse(
+      JSON.stringify({ message: "Not Authenthicated!" }),
+      { status: 401 },
+    );
+  }
+
   const { slug } = params;
 
   try {

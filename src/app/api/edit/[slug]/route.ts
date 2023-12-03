@@ -6,6 +6,15 @@ export const GET = async (
   req: NextRequest,
   { params }: { params: { slug: string } },
 ) => {
+  const session = getAuthSession();
+
+  if (!session) {
+    return new NextResponse(
+      JSON.stringify({ message: "Not Authenthicated!" }),
+      { status: 401 },
+    );
+  }
+
   const { slug } = params;
 
   try {
@@ -21,10 +30,19 @@ export const GET = async (
   }
 };
 
-export const POST = async (
+export const PUT = async (
   req: NextRequest,
   { params }: { params: { slug: string } },
 ) => {
+  const session = getAuthSession();
+
+  if (!session) {
+    return new NextResponse(
+      JSON.stringify({ message: "Not authenthicated!" }),
+      { status: 401 },
+    );
+  }
+
   const { slug } = params;
 
   try {

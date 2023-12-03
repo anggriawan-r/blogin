@@ -14,7 +14,7 @@ export const fetcher = async (
   oldSlug: string,
 ) => {
   const res = await fetch(`/api/edit/${oldSlug}`, {
-    method: "POST",
+    method: "PUT",
     body: JSON.stringify({
       title: data.title,
       body: data.body,
