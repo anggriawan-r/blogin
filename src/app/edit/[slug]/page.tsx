@@ -6,14 +6,15 @@ import TipTap from "@/components/tiptap/TipTap";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, Loader2 } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import useSWR from "swr";
-import { uploadImage } from "./_lib/uploadImage";
+import { uploadImage } from "@/utils/uploadImage";
 import slugify from "slugify";
 import { InputType } from "./_lib/type";
 import { fetcher } from "./_lib/fetcher";
+import { deleteImage } from "@/utils/deleteImage";
 
 async function getPost(url: string) {
   const res = await fetch(url);
@@ -31,7 +32,6 @@ export default function EditPage({ params }: { params: { slug: string } }) {
   const [media, setMedia] = useState<string>();
   const [url, setUrl] = useState<string>();
   const [slug, setSlug] = useState<string>();
-  // const [] = useState<boolean>(false)
   const [isImageAdded, setIsImageAdded] = useState<boolean>(true);
   const { status } = useSession();
   if (status === "unauthenticated") {
@@ -45,7 +45,7 @@ export default function EditPage({ params }: { params: { slug: string } }) {
     control,
     reset,
     getValues,
-    formState: { errors, isDirty, isSubmitSuccessful },
+    formState: { errors, isDirty, isSubmitSuccessful, isSubmitting },
   } = useForm<InputType>({
     defaultValues: {
       title: "",
@@ -66,10 +66,10 @@ export default function EditPage({ params }: { params: { slug: string } }) {
         body: data.body,
       });
     }
-  }, [isLoading]);
+  }, [isLoading, url]);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && url) {
       console.log("Updating...");
       fetcher(
         {
@@ -80,9 +80,10 @@ export default function EditPage({ params }: { params: { slug: string } }) {
             remove: /[*+~.()'"!:@]/g,
           }),
         },
-        url as string,
+        url,
         data.slug,
       ).then((res) => setSlug(res.slug));
+      deleteImage(data.image);
     }
   }, [isSubmitSuccessful]);
 
@@ -116,9 +117,7 @@ export default function EditPage({ params }: { params: { slug: string } }) {
             <input
               type="file"
               accept=".jpg, .jpeg, .png, .webp"
-              {...register("image", {
-                required: false,
-              })}
+              {...register("image")}
               id="image"
               onChange={(e) => updateImageDisplay(e)}
               className="hidden"
@@ -198,9 +197,16 @@ export default function EditPage({ params }: { params: { slug: string } }) {
             )}
             <button
               type="submit"
-              className="btn w-max bg-gray-900 px-10 text-white"
+              className="btn w-max bg-gray-900 px-10 text-white transition hover:scale-105"
             >
-              Update
+              {!isSubmitting ? (
+                "Update"
+              ) : (
+                <>
+                  <Loader2 className="animate-spin" />
+                  Updating
+                </>
+              )}
             </button>
           </form>
         </div>

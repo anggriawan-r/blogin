@@ -33,7 +33,7 @@ export default function ProfileModal({
   return (
     <div className="relative">
       <div
-        className="relative hidden h-10 w-10 cursor-pointer sm:block"
+        className="relative hidden h-10 w-10 cursor-pointer transition hover:scale-110 sm:block"
         onClick={handleProfile}
         ref={profileRef}
       >
@@ -63,7 +63,7 @@ export default function ProfileModal({
               </Link>
               <Link href="/myblog" onClick={() => setShowModal(false)}>
                 <li className="rounded-md px-6 py-4 transition-all hover:bg-gray-200 hover:text-gray-900">
-                  My Blogs
+                  My Blog
                 </li>
               </Link>
             </ul>

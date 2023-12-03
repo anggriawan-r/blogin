@@ -15,21 +15,21 @@ export default function Blog({ content }: { content: BlogListType }) {
   return (
     <div className="flex h-max flex-col gap-4">
       <Link href={`/blog/${content.slug}`}>
-        <div className="relative block h-[12rem] w-full">
+        <div className="relative block h-[12rem] w-full overflow-hidden rounded-lg">
           <Image
             src={content.image as string}
             alt="Hero Image"
             quality={90}
             fill
-            className="absolute rounded-lg object-cover"
+            className="absolute object-cover transition duration-500 ease-out hover:scale-110"
           />
         </div>
       </Link>
 
       <div className="prose prose-sm w-full sm:prose-base prose-headings:my-2 prose-p:m-0">
-        <p className="softTextColor leading-normal">{`${content.user.name} \u2027 ${month} ${day}, ${year}`}</p>
+        <p className="softTextColor text-sm leading-normal">{`${content.user.name} \u2027 ${month} ${day}, ${year}`}</p>
         <Link href={`/blog/${content.slug}`} className="no-underline">
-          <h2 className="line-clamp-3 break-words leading-tight">
+          <h2 className="line-clamp-3 break-words leading-tight transition hover:text-orange-600">
             {content.title}
           </h2>
         </Link>

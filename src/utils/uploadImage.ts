@@ -28,13 +28,13 @@ export const uploadImage = (
       () => {
         console.log("Uploading image...");
         getDownloadURL(uplaodTask.snapshot.ref).then((downloadUrl: string) => {
-          console.log("Image has been set!");
           setUrl(downloadUrl);
+          console.log("Image has been set!");
         });
       },
     );
   } else {
-    console.log("Image has been set!");
     setUrl(media as string);
+    console.log("Image has been set!");
   }
 };
