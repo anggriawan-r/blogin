@@ -1,6 +1,9 @@
 export async function getBlog(slug: string) {
   const res = await fetch(`${process.env.NEXTAUTH_URL}/api/blog/${slug}`, {
     cache: "no-store",
+    next: {
+      tags: ["get-blog"],
+    },
   });
 
   if (!res.ok) {
