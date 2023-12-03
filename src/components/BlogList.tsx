@@ -1,11 +1,11 @@
 import React from "react";
 import Blog from "./Blog";
 import Link from "next/link";
-import { getData } from "@/app/_lib/getData";
-import { BlogListType } from "@/utils/types";
+import { getBlogs } from "@/libs/getBlogs";
+import { BlogType } from "@/libs/types";
 
 export default async function BlogList() {
-  const data = await getData();
+  const data: BlogType[] = await getBlogs(6);
 
   return (
     <section
@@ -15,7 +15,7 @@ export default async function BlogList() {
       <h1 className="text-center text-3xl font-bold">Recent Blogs</h1>
 
       <div className="grid grid-cols-1 gap-x-6 gap-y-16 sm:grid-cols-2 md:grid-cols-3 lg:gap-x-12 ">
-        {data.map((data: BlogListType) => (
+        {data.map((data) => (
           <Blog key={data.id} content={data} />
         ))}
       </div>

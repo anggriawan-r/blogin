@@ -1,10 +1,12 @@
 import prisma from "@/utils/connect";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async () => {
+export const GET = async (req: NextRequest, res: NextResponse) => {
+  const take = parseInt(req.nextUrl.searchParams.get("take") as string);
+
   try {
     const posts = await prisma.post.findMany({
-      take: 6,
+      take: take,
       include: {
         user: true,
       },

@@ -1,7 +1,7 @@
 "use client";
 
-import { deleteImage } from "@/utils/deleteImage";
-import { BlogListType } from "@/utils/types";
+import { deleteImage } from "@/libs/deleteImage";
+import { BlogType } from "@/libs/types";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -12,7 +12,7 @@ export default function Blog({
   name,
   mutate,
 }: {
-  content: BlogListType;
+  content: BlogType;
   name: string;
   mutate: KeyedMutator<any>;
 }) {

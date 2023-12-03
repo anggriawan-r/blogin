@@ -2,23 +2,12 @@
 
 import React from "react";
 import Blog from "./_components/Blog";
-import { BlogListType } from "@/utils/types";
-import BlogSkeleton from "../../components/_skeleton/BlogSkeleton";
+import { BlogType } from "@/libs/types";
+import BlogSkeleton from "../../components/skeleton/BlogSkeleton";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import useSWR from "swr";
-
-async function fetcher(url: string) {
-  const res = await fetch(url);
-  const data = await res.json();
-
-  if (!res.ok) {
-    const error = new Error(data.message);
-    throw error;
-  }
-
-  return data;
-}
+import { fetcher } from "./_libs/fetcher";
 
 export default function MyBlog() {
   const { status } = useSession();
@@ -34,11 +23,11 @@ export default function MyBlog() {
       <h1 className="text-center text-3xl font-bold">My Blog</h1>
       <div className="grid grid-cols-1 gap-x-6 gap-y-16 px-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-x-12">
         {!isLoading ? (
-          data.Post.map((post: BlogListType) => (
+          data.map((post: BlogType) => (
             <Blog
               key={post.id}
               content={post}
-              name={data.name}
+              name={post.user.name}
               mutate={mutate}
             />
           ))

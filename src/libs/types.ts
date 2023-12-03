@@ -1,4 +1,4 @@
-export type BlogListType = {
+export type BlogType = {
   id: string;
   createdAt: string;
   slug: string;
@@ -8,7 +8,7 @@ export type BlogListType = {
   image?: string;
   views: number;
   userEmail: string;
-  comments: string[];
+  comments?: string[];
   user: {
     id: string;
     name: string;
@@ -16,4 +16,12 @@ export type BlogListType = {
     emailVerfied?: string;
     image?: string;
   };
+};
+
+export type EditBlogType = {
+  title: string;
+  abstract: string;
+  body: string;
+  image?: string;
+  slug: string;
 };

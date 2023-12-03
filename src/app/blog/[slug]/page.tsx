@@ -1,15 +1,15 @@
 import React from "react";
 import parse from "html-react-parser";
-import { BlogListType } from "@/utils/types";
 import Image from "next/image";
-import { getBlog } from "../_lib/getBlog";
+import { getBlog } from "@/libs/getBlog";
+import { BlogType } from "@/libs/types";
 
 export default async function PostPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const data: BlogListType = await getBlog(params.slug);
+  const data: BlogType = await getBlog(params.slug);
 
   const date = new Date(data.createdAt);
   const month = new Date(data.createdAt).toLocaleString("en-US", {

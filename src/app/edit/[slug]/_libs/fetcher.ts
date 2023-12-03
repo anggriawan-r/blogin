@@ -1,15 +1,8 @@
+import { EditBlogType } from "@/libs/types";
 import slugify from "slugify";
 
-type InputType = {
-  title: string;
-  abstract: string;
-  body: string;
-  image?: string;
-  slug: string;
-};
-
 export const fetcher = async (
-  data: InputType,
+  data: EditBlogType,
   downloadUrl: string,
   oldSlug: string,
 ) => {

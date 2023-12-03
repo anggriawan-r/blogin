@@ -1,9 +1,9 @@
-import { BlogListType } from "@/utils/types";
+import { BlogType } from "@/app/blog/_lib/types";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export default function Blog({ content }: { content: BlogListType }) {
+export default function Blog({ content }: { content: BlogType }) {
   const date = new Date(content.createdAt);
   const month = new Date(content.createdAt).toLocaleString("en-US", {
     month: "short",

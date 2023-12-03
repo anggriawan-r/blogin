@@ -9,11 +9,11 @@ import { redirect } from "next/navigation";
 import { ImageIcon, Loader2 } from "lucide-react";
 import Image from "next/image";
 import useSWR from "swr";
-import { uploadImage } from "@/utils/uploadImage";
+import { uploadImage } from "@/libs/uploadImage";
 import slugify from "slugify";
-import { InputType } from "./_lib/type";
-import { fetcher } from "./_lib/fetcher";
-import { deleteImage } from "@/utils/deleteImage";
+import { EditBlogType } from "@/libs/types";
+import { fetcher } from "./_libs/fetcher";
+import { deleteImage } from "@/libs/deleteImage";
 
 async function getPost(url: string) {
   const res = await fetch(url);
@@ -46,7 +46,7 @@ export default function EditPage({ params }: { params: { slug: string } }) {
     reset,
     getValues,
     formState: { errors, isDirty, isSubmitSuccessful, isSubmitting },
-  } = useForm<InputType>({
+  } = useForm<EditBlogType>({
     defaultValues: {
       title: "",
       abstract: "",
@@ -104,7 +104,7 @@ export default function EditPage({ params }: { params: { slug: string } }) {
     }
   };
 
-  const onSubmit: SubmitHandler<InputType> = () => {
+  const onSubmit: SubmitHandler<EditBlogType> = () => {
     console.log("Submitting");
     uploadImage(file, setUrl, media);
   };

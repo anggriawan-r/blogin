@@ -10,7 +10,7 @@ import { ImageIcon, Loader2 } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import slugify from "slugify";
-import { uploadBlog } from "./_lib/uploadBlog";
+import { uploadBlog } from "./_libs/uploadBlog";
 
 type InputType = {
   title: string;
