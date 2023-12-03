@@ -1,6 +1,6 @@
 export async function getBlogs() {
   const res = await fetch(`${process.env.NEXTAUTH_URL}/api/blog`, {
-    cache: "no-cache",
+    cache: "no-store",
   });
 
   if (!res.ok) {
