@@ -56,11 +56,6 @@ export default function ProfileModal({
             transition={{ ease: "easeOut", duration: 0.1 }}
           >
             <ul className="flex flex-col justify-center gap-1 text-left font-semibold text-gray-500">
-              <Link href="/profile" onClick={() => setShowModal(false)}>
-                <li className="rounded-md px-6 py-4 transition-all hover:bg-gray-200 hover:text-gray-900">
-                  My Profile
-                </li>
-              </Link>
               <Link href="/myblog" onClick={() => setShowModal(false)}>
                 <li className="rounded-md px-6 py-4 transition-all hover:bg-gray-200 hover:text-gray-900">
                   My Blog

@@ -41,7 +41,6 @@ export default function MobileNavigation({
 
           <hr className="w-full" />
 
-          <Link href="/profile">My Profile</Link>
           <Link href="/myblog">My Blog</Link>
 
           <hr className="w-full" />

@@ -20,14 +20,14 @@ export default function Hero() {
     } else if (status === "unauthenticated") {
       return (
         <>
-          Login untuk menulis
+          Login to Write
           <FiLogIn className="opacity-70" />
         </>
       );
     } else {
       return (
         <>
-          Mulai menulis
+          Start Writing
           <PenBox className="opacity-70" width={16} height={16} />
         </>
       );
@@ -50,12 +50,12 @@ export default function Hero() {
         <div className="flex flex-col items-center justify-center gap-8 sm:shrink-[2] sm:grow-[1]">
           <div className="flex flex-col gap-5">
             <h1 className="textColor text-center text-3xl font-semibold sm:text-left sm:text-4xl md:text-5xl">
-              Publikasikan tulisan Anda.
+              Publish your writing.
             </h1>
             <h2 className="softTextColor text-center sm:text-left sm:text-lg lg:text-xl">
-              Blogin bukan hanya platform blogging biasa. Blogin juga merupakan
-              wadah untuk komunitas penulis, pembaca, dan penggemar yang suka
-              mengeksplorasi ide, perspektif, dan pengalaman baru.
+              Blogin is not just an ordinary blogging platform. Blogin is also a
+              container for a community of writers, readers, and fans who like
+              to explore new ideas, perspectives, and experiences.
             </h2>
           </div>
 
@@ -74,7 +74,7 @@ export default function Hero() {
               scroll
               className="btn flex items-center justify-center gap-2 rounded-lg border border-gray-950 bg-white py-4 text-sm text-gray-900 transition-all hover:scale-105 sm:self-start sm:px-5"
             >
-              Jelajahi Blog
+              Explore Blog
             </Link>
           </div>
         </div>

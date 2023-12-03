@@ -3,7 +3,6 @@ import parse from "html-react-parser";
 import { BlogListType } from "@/utils/types";
 import Image from "next/image";
 import { getBlog } from "../_lib/getBlog";
-import BlogImageSkeleton from "../_components/BlogImageSkeleton";
 
 export default async function PostPage({
   params,
