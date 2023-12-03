@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import parse from "html-react-parser";
 import { BlogListType } from "@/utils/types";
 import Image from "next/image";
