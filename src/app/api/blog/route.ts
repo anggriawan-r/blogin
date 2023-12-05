@@ -2,15 +2,16 @@ import prisma from "@/utils/connect";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
-  const uid = req.nextUrl.searchParams.get("uid");
-  const page = parseInt(req.nextUrl.searchParams.get("page") as string);
+  const { searchParams } = new URL(req.url);
+  const uid = searchParams.get("uid");
+  const page = searchParams.get("page") as string;
 
   const POST_PER_PAGE = 12;
 
   try {
     const posts = await prisma.post.findMany({
       take: POST_PER_PAGE,
-      skip: POST_PER_PAGE * (page - 1),
+      skip: POST_PER_PAGE * (parseInt(page) - 1),
       where: {
         ...(uid && { user: { id: uid } }),
       },
