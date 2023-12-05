@@ -35,6 +35,7 @@ export default function EditPage({ params }: { params: { slug: string } }) {
   const [isImageAdded, setIsImageAdded] = useState<boolean>(true);
   const [isSendingData, setIsSendingData] = useState<boolean>(false);
   const { status } = useSession();
+
   const { data, isLoading, error } = useSWR(
     `/api/edit/${params.slug}`,
     getPost,
@@ -44,7 +45,7 @@ export default function EditPage({ params }: { params: { slug: string } }) {
     redirect("/login");
   }
 
-  if (!isLoading && typeof error === "undefined") {
+  if (!isLoading && error) {
     redirect(`/blog/${params.slug}`);
   }
 
@@ -75,7 +76,7 @@ export default function EditPage({ params }: { params: { slug: string } }) {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading]);
+  }, [isLoading, data]);
 
   useEffect(() => {
     if (!isLoading && url) {
