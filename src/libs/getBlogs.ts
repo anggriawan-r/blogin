@@ -10,5 +10,6 @@ export const getBlogs = async (page: number, uid?: string) => {
     throw new Error("Failed to fetch data!");
   }
 
-  return await res.json();
+  const data = await res.json();
+  return data;
 };
