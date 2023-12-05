@@ -5,7 +5,6 @@ import { getBlog } from "@/libs/getBlog";
 import { BlogType } from "@/libs/types";
 import Comments from "../_components/Comments";
 import { getDateFromDB } from "@/libs/getDateFromDB";
-import { getAuthSession } from "@/utils/auth";
 import Head from "next/head";
 import Link from "next/link";
 
@@ -14,7 +13,6 @@ export default async function PostPage({
 }: {
   params: { slug: string };
 }) {
-  const session = getAuthSession();
   const data: BlogType = await getBlog(params.slug);
   const { day, month, year } = getDateFromDB(data);
 

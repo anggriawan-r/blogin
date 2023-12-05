@@ -16,13 +16,13 @@ export default function MyBlog() {
     redirect("/login");
   }
 
-  // const { data, isLoading, mutate } = useSWR("/api/myblog", fetcher);
+  const { data, isLoading, mutate } = useSWR("/api/myblog", fetcher);
 
   return (
     <section id="blog" className="container my-24 flex flex-col gap-16">
       <h1 className="text-center text-3xl font-bold">My Blog</h1>
       <div className="grid grid-cols-1 gap-x-6 gap-y-16 px-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-x-12">
-        {/* {!isLoading ? (
+        {!isLoading ? (
           data.map((post: BlogType) => (
             <Blog
               key={post.id}
@@ -37,7 +37,7 @@ export default function MyBlog() {
             <BlogSkeleton />
             <BlogSkeleton />
           </>
-        )} */}
+        )}
       </div>
     </section>
   );
