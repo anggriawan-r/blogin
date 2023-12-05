@@ -7,6 +7,7 @@ import Comments from "../_components/Comments";
 import { getDateFromDB } from "@/libs/getDateFromDB";
 import { getAuthSession } from "@/utils/auth";
 import Head from "next/head";
+import Link from "next/link";
 
 export default async function PostPage({
   params,
@@ -45,7 +46,11 @@ export default async function PostPage({
               )}
             </div>
             <div>
-              <p className="text-sm text-gray-500">{data.user.name}</p>
+              <Link href={`/user/blog/${data.user.id}`}>
+                <p className="text-sm text-gray-500 transition hover:text-orange-500">
+                  {data.user.name}
+                </p>
+              </Link>
               <p className="text-sm text-gray-500">{`${month} ${day}, ${year}`}</p>
             </div>
           </div>

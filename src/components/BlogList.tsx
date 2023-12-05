@@ -5,7 +5,7 @@ import { getBlogs } from "@/libs/getBlogs";
 import { BlogType } from "@/libs/types";
 
 export default async function BlogList() {
-  const data: BlogType[] = await getBlogs(6);
+  const data: BlogType[] = await getBlogs(1);
 
   return (
     <section

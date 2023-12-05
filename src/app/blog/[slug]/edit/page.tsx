@@ -35,10 +35,18 @@ export default function EditPage({ params }: { params: { slug: string } }) {
   const [isImageAdded, setIsImageAdded] = useState<boolean>(true);
   const [isSendingData, setIsSendingData] = useState<boolean>(false);
   const { status } = useSession();
+  const { data, isLoading, error } = useSWR(
+    `/api/edit/${params.slug}`,
+    getPost,
+  );
+
   if (status === "unauthenticated") {
     redirect("/login");
   }
-  const { data, isLoading } = useSWR(`/api/edit/${params.slug}`, getPost);
+
+  if (typeof error === "undefined") {
+    redirect(`/blog/${params.slug}`);
+  }
 
   const {
     register,
@@ -71,7 +79,6 @@ export default function EditPage({ params }: { params: { slug: string } }) {
 
   useEffect(() => {
     if (!isLoading && url) {
-      console.log("Updating...");
       fetcher(
         {
           title: getValues("title"),
@@ -83,6 +90,7 @@ export default function EditPage({ params }: { params: { slug: string } }) {
         },
         url,
         data.slug,
+        data.userEmail,
       ).then((res) => {
         setSlug(res.slug);
       });

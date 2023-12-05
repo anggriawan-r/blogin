@@ -18,11 +18,6 @@ export default function Comments({ blogSlug }: { blogSlug: string }) {
     getComments,
   );
 
-  useEffect(() => {
-    console.log(data);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading]);
-
   const {
     register,
     handleSubmit,
@@ -35,7 +30,6 @@ export default function Comments({ blogSlug }: { blogSlug: string }) {
   });
 
   const onSubmit = async (formData: { comment: string }) => {
-    console.log(formData);
     await fetch("/api/comments", {
       method: "POST",
       body: JSON.stringify({ formData, blogSlug }),
@@ -74,7 +68,12 @@ export default function Comments({ blogSlug }: { blogSlug: string }) {
           </button>
         </form>
       ) : (
-        <Link href="/login">Login to write a comment</Link>
+        <p className="text-center">
+          <Link href="/login" className="softTextColor font-bold underline">
+            Login
+          </Link>{" "}
+          to write a comment
+        </p>
       )}
 
       <section className="my-12 flex flex-col gap-6">

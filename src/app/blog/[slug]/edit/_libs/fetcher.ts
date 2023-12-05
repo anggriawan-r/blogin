@@ -5,6 +5,7 @@ export const fetcher = async (
   data: EditBlogType,
   downloadUrl: string,
   oldSlug: string,
+  userEmail: string,
 ) => {
   const res = await fetch(`/api/edit/${oldSlug}`, {
     method: "PUT",
@@ -14,6 +15,7 @@ export const fetcher = async (
       abstract: data.abstract,
       image: downloadUrl,
       slug: slugify(data.title).toLowerCase(),
+      userEmail,
     }),
   });
 

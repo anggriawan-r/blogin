@@ -6,9 +6,10 @@ export const GET = async (
   req: NextRequest,
   { params }: { params: { slug: string } },
 ) => {
-  const session = getAuthSession();
+  const session = await getAuthSession();
+  const body = await req.json();
 
-  if (!session) {
+  if (!session || session.user?.email !== body.userEmail) {
     return new NextResponse(
       JSON.stringify({ message: "Not Authenthicated!" }),
       { status: 401 },
@@ -34,11 +35,12 @@ export const PUT = async (
   req: NextRequest,
   { params }: { params: { slug: string } },
 ) => {
-  const session = getAuthSession();
+  const session = await getAuthSession();
+  const body = await req.json();
 
-  if (!session) {
+  if (!session || session.user?.email !== body.userEmail) {
     return new NextResponse(
-      JSON.stringify({ message: "Not authenthicated!" }),
+      JSON.stringify({ message: "Not Authenthicated!" }),
       { status: 401 },
     );
   }

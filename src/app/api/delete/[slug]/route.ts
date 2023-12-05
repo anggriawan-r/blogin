@@ -6,7 +6,7 @@ export const DELETE = async (
   req: NextRequest,
   { params }: { params: { slug: string } },
 ) => {
-  const session = getAuthSession();
+  const session = await getAuthSession();
 
   if (!session) {
     return new NextResponse(
