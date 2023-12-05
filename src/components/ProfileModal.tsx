@@ -1,5 +1,6 @@
 import { useClickOutsideDropdown } from "@/hooks/useClickOutsideDropdown";
 import { AnimatePresence, motion } from "framer-motion";
+import { User2 } from "lucide-react";
 import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,10 +10,12 @@ export default function ProfileModal({
   showModal,
   setShowModal,
   session,
+  status,
 }: {
   showModal: boolean;
   setShowModal: (T: boolean) => void;
-  session: Session;
+  session: Session | null;
+  status: "authenticated" | "loading" | "unauthenticated";
 }) {
   const profileRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -30,20 +33,41 @@ export default function ProfileModal({
     setShowModal(!showModal);
   };
 
+  function ProfilePicture() {
+    switch (status) {
+      case "authenticated":
+        return (
+          <div
+            className="relative hidden h-10 w-10 cursor-pointer transition hover:scale-110 sm:block"
+            onClick={handleProfile}
+            ref={profileRef}
+          >
+            <Image
+              src={session?.user?.image as string}
+              alt="profile picture"
+              fill
+              className="absolute rounded-full object-cover"
+            />
+          </div>
+        );
+      case "loading":
+        return (
+          <div className="hidden h-10 w-10 items-center justify-center rounded-full bg-gray-300 sm:flex">
+            <User2 />
+          </div>
+        );
+      default:
+        return (
+          <div className="hidden h-10 w-10 items-center justify-center rounded-full bg-gray-300 sm:flex">
+            <User2 />
+          </div>
+        );
+    }
+  }
+
   return (
     <div className="relative">
-      <div
-        className="relative hidden h-10 w-10 cursor-pointer transition hover:scale-110 sm:block"
-        onClick={handleProfile}
-        ref={profileRef}
-      >
-        <Image
-          src={session?.user?.image as string}
-          alt="profile picture"
-          fill
-          className="absolute rounded-full object-cover"
-        />
-      </div>
+      <ProfilePicture />
       <AnimatePresence>
         {showModal && (
           <motion.div

@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
+import { Loader2, User2 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,7 +28,10 @@ export default function Header() {
       );
     } else if (status === "unauthenticated") {
       return (
-        <Link href="/login" className="btn hidden bg-gray-900 sm:block">
+        <Link
+          href="/login"
+          className="btn hidden bg-gray-900 transition hover:scale-105 sm:block"
+        >
           Login
         </Link>
       );
@@ -44,13 +47,10 @@ export default function Header() {
     }
   }
 
-  return (
-    <header className="fixed top-0 z-[999] flex h-16 w-full items-center justify-between bg-white/80 px-4 shadow-sm backdrop-blur">
-      <Link href="/" className="text-2xl font-bold">
-        blogin.
-      </Link>
-      <nav className="relative flex items-center sm:gap-8">
-        {status === "authenticated" && (
+  function ProfilePicture() {
+    switch (status) {
+      case "authenticated":
+        return (
           <div className="relative mx-4 h-8 w-8 sm:hidden">
             <Image
               src={session.user?.image as string}
@@ -59,7 +59,23 @@ export default function Header() {
               className="absolute rounded-full object-cover"
             />
           </div>
-        )}
+        );
+      default:
+        return (
+          <div className="mx-4 flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 sm:hidden">
+            <User2 />
+          </div>
+        );
+    }
+  }
+
+  return (
+    <header className="fixed top-0 z-[999] flex h-16 w-full items-center justify-between bg-white/80 px-4 shadow-sm backdrop-blur">
+      <Link href="/" className="text-2xl font-bold">
+        blogin.
+      </Link>
+      <nav className="relative flex items-center sm:gap-8">
+        <ProfilePicture />
         <MobileNavigation
           open={open}
           setOpen={setOpen}
@@ -79,21 +95,21 @@ export default function Header() {
           Blog
         </Link>
         {status === "authenticated" && (
-          <>
-            <Link
-              href="/write"
-              className="hidden font-semibold text-gray-500 transition-all hover:text-gray-900 sm:block"
-              onClick={() => setOpen(false)}
-            >
-              Write
-            </Link>
-            <ProfileModal
-              showModal={showModal}
-              setShowModal={setShowModal}
-              session={session}
-            />
-          </>
+          <Link
+            href="/write"
+            className="hidden font-semibold text-gray-500 transition-all hover:text-gray-900 sm:block"
+            onClick={() => setOpen(false)}
+          >
+            Write
+          </Link>
         )}
+        <ProfileModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          session={session}
+          status={status}
+        />
+
         <AuthButton />
       </nav>
     </header>

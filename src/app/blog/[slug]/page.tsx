@@ -44,7 +44,7 @@ export default async function PostPage({
               )}
             </div>
             <div>
-              <Link href={`/user/blog/${data.user.id}`}>
+              <Link href={`/user/${data.user.id}/blog`}>
                 <p className="text-sm text-gray-500 transition hover:text-orange-500">
                   {data.user.name}
                 </p>

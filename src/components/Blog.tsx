@@ -21,10 +21,10 @@ export default function Blog({ content }: { content: BlogType }) {
         </Link>
       </div>
 
-      <div className="prose prose-sm w-full sm:prose-base prose-headings:my-2 prose-p:m-0">
+      <div className="prose prose-sm w-full lg:prose-base prose-headings:my-2 prose-p:m-0">
         <p className="softTextColor text-sm leading-normal">
           <Link
-            href={`/user/blog/${content.user.id}`}
+            href={`/user/${content.user.id}/blog`}
             className="softTextColor no-underline transition hover:text-orange-600"
           >
             {content.user.name}

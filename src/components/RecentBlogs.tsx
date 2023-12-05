@@ -4,7 +4,7 @@ import Link from "next/link";
 import { getBlogs } from "@/libs/getBlogs";
 import { BlogType } from "@/libs/types";
 
-export default async function BlogList() {
+export default async function RecentBlogs() {
   const data: BlogType[] = await getBlogs(1);
 
   return (

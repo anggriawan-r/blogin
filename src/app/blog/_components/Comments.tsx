@@ -40,7 +40,7 @@ export default function Comments({ blogSlug }: { blogSlug: string }) {
 
   return (
     <section className="my-12 flex w-full flex-col gap-4">
-      <h1 className="text-2xl font-bold">Comments</h1>
+      <h1 className="text-lg font-bold md:text-2xl">Comments</h1>
       {status === "authenticated" ? (
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -50,21 +50,17 @@ export default function Comments({ blogSlug }: { blogSlug: string }) {
             {...register("comment", { required: "Comment can not blank" })}
             id="comment"
             placeholder="Write a comment..."
-            className="h-24 w-full resize-none rounded-lg border border-black/25 p-4"
+            className="h-24 w-full resize-none rounded-lg border border-black/25 p-2 text-sm sm:p-4"
           />
           {errors.comment && isDirty && (
             <p className="-mt-6 ml-2 text-red-500">{errors.comment.message}</p>
           )}
           <button
             type="submit"
-            className="group flex items-center justify-center gap-2 self-end rounded-md bg-gray-900 px-4 py-3 text-sm text-white/80 transition hover:scale-105"
+            className="group flex items-center justify-center gap-2 self-end rounded-md bg-gray-900 px-3 py-3 text-xs text-white/80 transition hover:scale-105 sm:px-4 sm:py-3 sm:text-sm"
           >
             Add comment
-            <Send
-              width={16}
-              height={16}
-              className="transition group-hover:-translate-y-[2px] group-hover:translate-x-[2px]"
-            />
+            <Send className="h-3 w-3 transition group-hover:-translate-y-[2px] group-hover:translate-x-[2px] sm:h-4 sm:w-4" />
           </button>
         </form>
       ) : (
