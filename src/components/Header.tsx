@@ -51,16 +51,14 @@ export default function Header() {
       </Link>
       <nav className="relative flex items-center sm:gap-8">
         {status === "authenticated" && (
-          <Link href="/profile">
-            <div className="relative mx-4 h-8 w-8 sm:hidden">
-              <Image
-                src={session.user?.image as string}
-                alt="profile picture"
-                fill
-                className="absolute rounded-full object-cover"
-              />
-            </div>
-          </Link>
+          <div className="relative mx-4 h-8 w-8 sm:hidden">
+            <Image
+              src={session.user?.image as string}
+              alt="profile picture"
+              fill
+              className="absolute rounded-full object-cover"
+            />
+          </div>
         )}
         <MobileNavigation
           open={open}

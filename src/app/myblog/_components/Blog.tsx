@@ -1,6 +1,7 @@
 "use client";
 
 import { deleteImage } from "@/libs/deleteImage";
+import { getDateFromDB } from "@/libs/getDateFromDB";
 import { BlogType } from "@/libs/types";
 import Image from "next/image";
 import Link from "next/link";
@@ -29,13 +30,7 @@ export default function Blog({
     mutate();
   };
 
-  const date = new Date(content.createdAt);
-  const month = new Date(content.createdAt).toLocaleString("en-US", {
-    month: "short",
-  });
-
-  const day = date.getDate();
-  const year = date.getFullYear();
+  const { day, month, year } = getDateFromDB(content);
 
   return (
     <div className="flex h-max flex-col gap-4">
@@ -50,7 +45,7 @@ export default function Blog({
           />
         </Link>
         <div className="absolute right-2 top-2 z-10 flex w-max flex-col gap-2">
-          <Link href={`/edit/${content.slug}`}>
+          <Link href={`/blog/${content.slug}/edit`}>
             <button className="w-full rounded-md bg-black/40 px-2 py-2 text-xs text-white transition hover:bg-black md:text-sm">
               Edit
             </button>

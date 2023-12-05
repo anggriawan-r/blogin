@@ -1,16 +1,11 @@
+import { getDateFromDB } from "@/libs/getDateFromDB";
 import { BlogType } from "@/libs/types";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 export default function Blog({ content }: { content: BlogType }) {
-  const date = new Date(content.createdAt);
-  const month = new Date(content.createdAt).toLocaleString("en-US", {
-    month: "short",
-  });
-
-  const day = date.getDate();
-  const year = date.getFullYear();
+  const { day, month, year } = getDateFromDB(content);
 
   return (
     <div className="flex h-max flex-col gap-4">

@@ -1,0 +1,88 @@
+"use client";
+
+import { Send } from "lucide-react";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Comment from "./Comment";
+import useSWR from "swr";
+import { getComments } from "../_libs/getComments";
+import { CommentType } from "@/libs/types";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+
+export default function Comments({ blogSlug }: { blogSlug: string }) {
+  const { data: session, status } = useSession();
+
+  const { data, error, isLoading, mutate } = useSWR(
+    `/api/comments?blogSlug=${blogSlug}`,
+    getComments,
+  );
+
+  useEffect(() => {
+    console.log(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading]);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isDirty },
+  } = useForm({
+    defaultValues: {
+      comment: "",
+    },
+  });
+
+  const onSubmit = async (formData: { comment: string }) => {
+    console.log(formData);
+    await fetch("/api/comments", {
+      method: "POST",
+      body: JSON.stringify({ formData, blogSlug }),
+    });
+    reset();
+    mutate();
+  };
+
+  return (
+    <section className="my-12 flex w-full flex-col gap-4">
+      <h1 className="text-2xl font-bold">Comments</h1>
+      {status === "authenticated" ? (
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex w-full flex-col gap-2"
+        >
+          <textarea
+            {...register("comment", { required: "Comment can not blank" })}
+            id="comment"
+            placeholder="Write a comment..."
+            className="h-24 w-full resize-none rounded-lg border border-black/25 p-4"
+          />
+          {errors.comment && isDirty && (
+            <p className="-mt-6 ml-2 text-red-500">{errors.comment.message}</p>
+          )}
+          <button
+            type="submit"
+            className="group flex items-center justify-center gap-2 self-end rounded-md bg-gray-900 px-4 py-3 text-sm text-white/80 transition hover:scale-105"
+          >
+            Add comment
+            <Send
+              width={16}
+              height={16}
+              className="transition group-hover:-translate-y-[2px] group-hover:translate-x-[2px]"
+            />
+          </button>
+        </form>
+      ) : (
+        <Link href="/login">Login to write a comment</Link>
+      )}
+
+      <section className="my-12 flex flex-col gap-6">
+        {!isLoading &&
+          data.map((comment: CommentType) => (
+            <Comment key={comment.id} data={comment} />
+          ))}
+      </section>
+    </section>
+  );
+}

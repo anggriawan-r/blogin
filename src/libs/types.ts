@@ -25,3 +25,17 @@ export type EditBlogType = {
   image?: string;
   slug: string;
 };
+
+export type CommentType = {
+  id: string;
+  createdAt: string;
+  body: string;
+  userEmail: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    emailVerified?: string;
+    image: string;
+  };
+};
