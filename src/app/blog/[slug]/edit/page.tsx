@@ -44,7 +44,7 @@ export default function EditPage({ params }: { params: { slug: string } }) {
     redirect("/login");
   }
 
-  if (typeof error === "undefined") {
+  if (!isLoading && typeof error === "undefined") {
     redirect(`/blog/${params.slug}`);
   }
 
