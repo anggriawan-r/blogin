@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 export const useClickOutsideDropdown = (
   modalRef: any,
-  profileRef: any,
+  buttonRef: any,
   callback: () => void,
   showModal: boolean,
 ) => {
@@ -12,7 +12,7 @@ export const useClickOutsideDropdown = (
         modalRef?.current &&
         showModal &&
         !modalRef?.current.contains(e.target) &&
-        !profileRef?.current.contains(e.target)
+        !buttonRef?.current.contains(e.target)
       ) {
         callback();
       }
@@ -23,5 +23,5 @@ export const useClickOutsideDropdown = (
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [modalRef, profileRef, callback, showModal]);
+  }, [modalRef, buttonRef, callback, showModal]);
 };

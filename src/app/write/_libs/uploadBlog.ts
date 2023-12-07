@@ -5,7 +5,6 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import toast from "react-hot-toast";
 import slugify from "slugify";
 
 type InputType = {
@@ -31,11 +30,8 @@ export const uploadBlog = async (
     uplaodTask.on(
       "state_changed",
       (snapshot) => {},
-      (error) => {
-        toast.error("Failed to add image");
-      },
+      (error) => {},
       () => {
-        toast.success("Image uploaded");
         getDownloadURL(uplaodTask.snapshot.ref).then((downloadUrl: string) => {
           fetcher(data, downloadUrl).then((res) => setSlug(res.slug));
         });

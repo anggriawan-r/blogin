@@ -1,49 +1,38 @@
-import { BlogListType } from "@/utils/types";
+import { getDateFromDB } from "@/libs/getDateFromDB";
+import { BlogType } from "@/libs/types";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export default function Blog({ content }: { content: BlogListType }) {
-  const date = new Date(content.createdAt);
-  const month = new Date(content.createdAt).toLocaleString("en-US", {
-    month: "short",
-  });
-
-  const day = date.getDate();
-  const year = date.getFullYear();
+export default function Blog({ content }: { content: BlogType }) {
+  const { day, month, year } = getDateFromDB(content);
 
   return (
     <div className="flex h-max flex-col gap-4">
-      {content.image ? (
+      <div className="relative block h-[12rem] w-full overflow-hidden rounded-lg">
         <Link href={`/blog/${content.slug}`}>
-          <div className="relative block h-[12rem] w-full">
-            <Image
-              src={content.image}
-              alt="Hero Image"
-              quality={90}
-              fill
-              className="rounded-lg object-cover"
-            />
-          </div>
+          <Image
+            src={content.image as string}
+            alt="Hero Image"
+            quality={90}
+            fill
+            className="absolute object-cover transition duration-500 ease-out hover:scale-110"
+          />
         </Link>
-      ) : (
-        <Link href={`/blog/${content.slug}`}>
-          <div className="relative block h-[12rem] w-full">
-            <Image
-              src="https://images.pexels.com/photos/161275/santorini-travel-holidays-vacation-161275.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              alt="Hero Image"
-              quality={90}
-              fill
-              className="rounded-lg object-cover"
-            />
-          </div>
-        </Link>
-      )}
+      </div>
 
-      <div className="prose prose-sm w-full sm:prose-base prose-headings:my-2 prose-p:m-0">
-        <p className="softTextColor leading-normal">{`${content.user.name} \u2027 ${month} ${day}, ${year}`}</p>
+      <div className="prose prose-sm w-full lg:prose-base prose-headings:my-2 prose-p:m-0">
+        <p className="softTextColor text-sm leading-normal">
+          <Link
+            href={`/user/${content.user.id}/blog`}
+            className="softTextColor no-underline transition hover:text-orange-600"
+          >
+            {content.user.name}
+          </Link>
+          <span> &#183;</span> {day} {month}, {year}
+        </p>
         <Link href={`/blog/${content.slug}`} className="no-underline">
-          <h2 className="line-clamp-3 break-words leading-tight">
+          <h2 className="line-clamp-3 break-words leading-tight transition hover:text-orange-600">
             {content.title}
           </h2>
         </Link>

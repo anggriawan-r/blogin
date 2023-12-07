@@ -1,8 +1,9 @@
+import { useClickOutsideDropdown } from "@/hooks/useClickOutsideDropdown";
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2, Menu, X } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import React from "react";
+import React, { useRef } from "react";
 
 type propsType = {
   open: boolean;
@@ -16,6 +17,10 @@ export default function MobileNavigation({
   handleOpen,
 }: propsType) {
   const { status } = useSession();
+  const buttonRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useClickOutsideDropdown(modalRef, buttonRef, () => setOpen(false), open);
 
   function AuthButton() {
     if (status === "loading") {
@@ -41,7 +46,6 @@ export default function MobileNavigation({
 
           <hr className="w-full" />
 
-          <Link href="/profile">My Profile</Link>
           <Link href="/myblog">My Blog</Link>
 
           <hr className="w-full" />
@@ -69,7 +73,11 @@ export default function MobileNavigation({
 
   return (
     <div>
-      <motion.div animate={open ? "open" : "closed"} variants={variantsBar}>
+      <motion.div
+        animate={open ? "open" : "closed"}
+        variants={variantsBar}
+        ref={buttonRef}
+      >
         {!open ? (
           <Menu onClick={handleOpen} className="h-8 w-8 sm:hidden" />
         ) : (
@@ -79,6 +87,7 @@ export default function MobileNavigation({
       <AnimatePresence>
         {open && (
           <motion.div
+            ref={modalRef}
             className="absolute right-0 top-[200%] flex min-w-max flex-col items-center justify-center gap-4 rounded-md border border-black/10 bg-white px-4 py-4 text-gray-900 shadow-lg"
             initial={{ opacity: 0, x: 50 }}
             animate={"open"}

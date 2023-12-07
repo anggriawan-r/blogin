@@ -7,20 +7,12 @@ import {
 } from "firebase/storage";
 import toast from "react-hot-toast";
 
-type InputType = {
-  title: string;
-  abstract: string;
-  body: string;
-  image?: string;
-  slug: string;
-};
-
 const storage = getStorage(app);
 
-export const uploadBlog = async (
+export const uploadImage = (
   file: File | undefined,
   setUrl: (T: string) => void,
-  fetcher: () => void,
+  media: string | undefined,
 ) => {
   if (file !== undefined) {
     const name = new Date().getTime() + file.name;
@@ -34,32 +26,15 @@ export const uploadBlog = async (
         toast.error("Failed to add image");
       },
       () => {
-        toast.success("Image uploaded");
+        console.log("Uploading image...");
         getDownloadURL(uplaodTask.snapshot.ref).then((downloadUrl: string) => {
-          fetcher();
+          setUrl(downloadUrl);
+          console.log("Image has been set!");
         });
       },
     );
+  } else {
+    setUrl(media as string);
+    console.log("Image has been set!");
   }
 };
-
-// const fetcher = async (
-//   data: InputType,
-//   downloadUrl: string,
-//   oldSlug: string,
-// ) => {
-//   const res = await fetch(`/api/edit/${oldSlug}`, {
-//     method: "POST",
-//     body: JSON.stringify({
-//       title: data.title,
-//       body: data.body,
-//       abstract: data.abstract,
-//       image: downloadUrl,
-//       slug: slugify(data.title).toLowerCase(),
-//       oldSlug: oldSlug,
-//     }),
-//   });
-
-//   const slug = await res.json();
-//   return slug;
-// };

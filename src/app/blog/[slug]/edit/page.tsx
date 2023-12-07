@@ -6,19 +6,14 @@ import TipTap from "@/components/tiptap/TipTap";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import { ImageIcon } from "lucide-react";
-import { Toaster } from "react-hot-toast";
+import { ImageIcon, Loader2 } from "lucide-react";
 import Image from "next/image";
-import slugify from "slugify";
-import { uploadBlog } from "./_lib/uploadBlog";
 import useSWR from "swr";
-
-type InputType = {
-  title: string;
-  abstract: string;
-  body: string;
-  image?: string;
-};
+import { uploadImage } from "@/libs/uploadImage";
+import slugify from "slugify";
+import { EditBlogType } from "@/libs/types";
+import { fetcher } from "./_libs/fetcher";
+import { deleteImage } from "@/libs/deleteImage";
 
 async function getPost(url: string) {
   const res = await fetch(url);
@@ -33,30 +28,46 @@ async function getPost(url: string) {
 
 export default function EditPage({ params }: { params: { slug: string } }) {
   const [file, setFile] = useState<File>();
-  const [media, setMedia] = useState<string>("");
-  const [url, setUrl] = useState<string>("");
+  const [media, setMedia] = useState<string>();
+  const [oldImage, setOldImage] = useState<string>();
+  const [url, setUrl] = useState<string>();
   const [slug, setSlug] = useState<string>();
   const [isImageAdded, setIsImageAdded] = useState<boolean>(true);
+  const [isSendingData, setIsSendingData] = useState<boolean>(false);
   const { status } = useSession();
 
-  const { data, isLoading } = useSWR(`/api/edit/${params.slug}`, getPost);
+  const { data, isLoading, error } = useSWR(
+    `/api/edit/${params.slug}`,
+    getPost,
+  );
+
+  if (status === "unauthenticated") {
+    redirect("/login");
+  }
+
+  if (!isLoading && error) {
+    redirect(`/blog/${params.slug}`);
+  }
 
   const {
     register,
     handleSubmit,
     control,
     reset,
-    formState: { errors, isDirty },
-  } = useForm<InputType>({
+    getValues,
+    formState: { errors, isDirty, isSubmitSuccessful },
+  } = useForm<EditBlogType>({
     defaultValues: {
       title: "",
       abstract: "",
       body: "",
+      image: undefined,
     },
   });
 
   useEffect(() => {
     if (!isLoading) {
+      setOldImage(data.image);
       setMedia(data.image);
       reset({
         title: data.title,
@@ -64,10 +75,34 @@ export default function EditPage({ params }: { params: { slug: string } }) {
         body: data.body,
       });
     }
-  }, [reset, isLoading, data]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, data]);
 
-  if (status === "unauthenticated") {
-    redirect("/login");
+  useEffect(() => {
+    if (!isLoading && url) {
+      fetcher(
+        {
+          title: getValues("title"),
+          abstract: getValues("abstract"),
+          body: getValues("body"),
+          slug: slugify(getValues("title").toLowerCase(), {
+            remove: /[*+~.()'"!:@]/g,
+          }),
+        },
+        url,
+        data.slug,
+        data.userEmail,
+      ).then((res) => {
+        setSlug(res.slug);
+      });
+      setIsSendingData(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSubmitSuccessful, url]);
+
+  if (slug !== undefined && isSendingData === false) {
+    if (url !== oldImage) deleteImage(oldImage as string);
+    redirect(`/blog/${slug}`);
   }
 
   const updateImageDisplay = (e: ChangeEvent<HTMLInputElement>) => {
@@ -80,16 +115,13 @@ export default function EditPage({ params }: { params: { slug: string } }) {
     }
   };
 
-  const onSubmit: SubmitHandler<InputType> = async (formData) => {};
-
-  if (slug !== undefined) {
-    redirect(`/blog/${slug}`);
-  }
+  const onSubmit: SubmitHandler<EditBlogType> = () => {
+    setIsSendingData(true);
+    uploadImage(file, setUrl, media);
+  };
 
   return (
     <section className="container my-[64px] flex w-full flex-col items-center justify-center px-4 lg:max-w-screen-lg">
-      <Toaster />
-
       {!isLoading && (
         <div className="my-12 flex w-full flex-col gap-8 self-start">
           <form
@@ -99,8 +131,9 @@ export default function EditPage({ params }: { params: { slug: string } }) {
             <input
               type="file"
               accept=".jpg, .jpeg, .png, .webp"
-              {...register("image", { required: "Image is required" })}
+              {...register("image")}
               id="image"
+              defaultValue={undefined}
               onChange={(e) => updateImageDisplay(e)}
               className="hidden"
             />
@@ -179,9 +212,16 @@ export default function EditPage({ params }: { params: { slug: string } }) {
             )}
             <button
               type="submit"
-              className="btn w-max bg-gray-900 px-10 text-white"
+              className="btn flex w-max items-center justify-center gap-2 bg-gray-900 px-10 text-white transition hover:scale-105"
             >
-              Update
+              {!isSendingData ? (
+                "Update"
+              ) : (
+                <>
+                  <Loader2 className="animate-spin" />
+                  Updating
+                </>
+              )}
             </button>
           </form>
         </div>

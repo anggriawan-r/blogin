@@ -6,11 +6,11 @@ import TipTap from "@/components/tiptap/TipTap";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, Loader2 } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import slugify from "slugify";
-import { uploadBlog } from "./_lib/uploadBlog";
+import { uploadBlog } from "./_libs/uploadBlog";
 
 type InputType = {
   title: string;
@@ -30,7 +30,7 @@ export default function WritePage() {
     register,
     handleSubmit,
     control,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, isSubmitting },
   } = useForm<InputType>({
     defaultValues: {
       title: "",
@@ -151,9 +151,16 @@ export default function WritePage() {
           )}
           <button
             type="submit"
-            className="btn w-max bg-gray-900 px-10 text-white"
+            className="btn w-max bg-gray-900 px-10 text-white transition hover:scale-105"
           >
-            Publish
+            {!isSubmitting ? (
+              "Publish"
+            ) : (
+              <>
+                <Loader2 className="animate-spin" />
+                Publishing
+              </>
+            )}
           </button>
         </form>
       </div>

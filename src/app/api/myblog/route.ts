@@ -12,10 +12,10 @@ export const GET = async () => {
   }
 
   try {
-    const posts = await prisma.user.findUnique({
-      where: { email: session.user!.email! },
+    const posts = await prisma.post.findMany({
+      where: { userEmail: session.user!.email! },
       include: {
-        Post: true,
+        user: true,
       },
     });
     return new NextResponse(JSON.stringify(posts), { status: 200 });
