@@ -16,6 +16,13 @@ export type BlogType = {
     emailVerfied?: string;
     image?: string;
   };
+  Category: {
+    id: string;
+    slug: string;
+    title: string;
+    img?: string;
+    Posts: BlogType[];
+  };
 };
 
 export type EditBlogType = {

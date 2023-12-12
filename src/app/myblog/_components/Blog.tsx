@@ -11,25 +11,12 @@ import { KeyedMutator } from "swr";
 export default function Blog({
   content,
   name,
-  mutate,
+  handleModal,
 }: {
   content: BlogType;
   name: string;
-  mutate: KeyedMutator<any>;
+  handleModal: () => void;
 }) {
-  const deleteBlog = async (slug: string) => {
-    try {
-      deleteImage(content.image as string);
-
-      await fetch(`/api/delete/${slug}`, {
-        method: "DELETE",
-      });
-    } catch (error) {
-      console.log(error);
-    }
-    mutate();
-  };
-
   const { day, month, year } = getDateFromDB(content);
 
   return (
@@ -52,7 +39,7 @@ export default function Blog({
           </Link>
 
           <button
-            onClick={() => deleteBlog(content.slug)}
+            onClick={handleModal}
             className="w-full rounded-md bg-red-500/50 px-2 py-2 text-xs text-white transition hover:bg-red-500 md:text-sm"
           >
             Delete

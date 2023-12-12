@@ -1,6 +1,10 @@
-export const getBlogs = async (page: number, uid?: string) => {
+export const getBlogs = async (
+  limit: number = 12,
+  page: number = 1,
+  id: string = "",
+) => {
   const res = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/blog?uid=${uid || ""}&page=${page}`,
+    `${process.env.NEXTAUTH_URL}/api/blog?limit=${limit}&page=${page}&id=${id}`,
     {
       cache: "no-store",
     },

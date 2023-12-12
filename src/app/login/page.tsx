@@ -1,20 +1,17 @@
 "use client";
 
-import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
-import { redirect } from "next/navigation";
 import React from "react";
-import { BsGoogle, BsGithub, BsFacebook } from "react-icons/bs";
-
-type InputType = {
-  email: string;
-  password: string;
-};
+import AuthButton from "./_components/AuthButton";
+import { redirect, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function LoginPage() {
-  const { status } = useSession();
+  const providers = ["google", "github", "facebook"];
+  const { data: session, status } = useSession();
+  const callbackUrl = useSearchParams().get("callbackUrl");
 
-  if (status === "authenticated") {
+  if (session) {
     redirect("/");
   }
 
@@ -33,25 +30,14 @@ export default function LoginPage() {
         <div className="flex h-full flex-col items-center justify-center rounded-lg border border-black/10 p-8 shadow-lg">
           <h1 className="mb-12 text-3xl font-bold text-gray-900">Login</h1>
           <div className="flex flex-col items-center justify-center gap-4">
-            <button
-              className="btn flex w-full items-center gap-4 bg-gray-900 py-4 text-sm transition hover:scale-110"
-              onClick={() => signIn("google")}
-            >
-              <BsGoogle />
-              Login with Google
-            </button>
-            <button
-              className="btn flex w-full items-center gap-4 bg-gray-900 py-4 text-sm transition hover:scale-110"
-              onClick={() => signIn("github")}
-            >
-              <BsGithub /> Login with Github
-            </button>
-            <button
-              className="btn flex w-full items-center gap-4 bg-gray-900 py-4 text-sm transition hover:scale-110"
-              onClick={() => signIn("facebook")}
-            >
-              <BsFacebook /> Login with Facebook
-            </button>
+            {providers &&
+              Object.values(providers).map((provider) => (
+                <AuthButton
+                  key={provider}
+                  provider={provider}
+                  callbackUrl={callbackUrl}
+                />
+              ))}
           </div>
         </div>
       </div>

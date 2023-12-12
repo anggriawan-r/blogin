@@ -67,7 +67,7 @@ export default function WritePage() {
   }
 
   return (
-    <section className="container my-[64px] flex w-full flex-col items-center justify-center px-4 lg:max-w-screen-lg">
+    <div className="container mt-16 flex w-full flex-col items-center justify-center px-4 lg:max-w-screen-lg">
       <Toaster />
 
       <div className="my-12 flex w-full flex-col gap-8 self-start">
@@ -121,7 +121,7 @@ export default function WritePage() {
             placeholder="Title..."
             id="title"
             maxRows={4}
-            className="w-full resize-none overscroll-contain border-none p-2 text-2xl font-bold placeholder-gray-300 outline-none sm:text-3xl md:text-5xl"
+            className="w-full resize-none overscroll-contain border-none bg-gray-50 p-2 text-2xl font-bold placeholder-gray-300 outline-none sm:text-3xl md:text-5xl"
           />
           {errors.title && isDirty && (
             <p className="-mt-6 ml-2 text-red-500">{errors.title.message}</p>
@@ -132,7 +132,7 @@ export default function WritePage() {
             placeholder="Introduction..."
             maxRows={20}
             id="introduction"
-            className="prose w-full max-w-none resize-none overscroll-contain border-none p-2 leading-tight placeholder-gray-400 outline-none lg:prose-lg"
+            className="prose w-full max-w-none resize-none overscroll-contain border-none bg-gray-50 p-2 leading-tight placeholder-gray-400 outline-none lg:prose-lg"
           />
           {errors.abstract && isDirty && (
             <p className="-mt-6 ml-2 text-red-500">{errors.abstract.message}</p>
@@ -164,6 +164,6 @@ export default function WritePage() {
           </button>
         </form>
       </div>
-    </section>
+    </div>
   );
 }
