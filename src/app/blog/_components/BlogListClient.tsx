@@ -19,14 +19,14 @@ export default async function BlogListClient({
   category,
   sort,
 }: Props) {
-  // const { posts, count }: { posts: BlogType[]; count: number } = await getBlogs(
-  //   { id, limit, page, category, sort },
-  // );
+  const { posts, count }: { posts: BlogType[]; count: number } = await getBlogs(
+    { id, limit, page, category, sort },
+  );
 
   return (
     <div className="flex w-full flex-col items-center gap-8 lg:w-2/3">
-      {/* <BlogList posts={posts} />
-      <Pagination limit={limit} count={count} page={page} /> */}
+      <BlogList posts={posts} />
+      <Pagination limit={limit} count={count} page={page} />
     </div>
   );
 }
