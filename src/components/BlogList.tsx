@@ -1,12 +1,8 @@
 import React from "react";
 import Blog from "./Blog";
-import { BlogType } from "@/libs/types";
+import { Blogs } from "@/libs/getBlogs";
 
-type Props = {
-  posts: BlogType[];
-};
-
-export default function BlogList({ posts }: Props) {
+export default function BlogList({ posts }: { posts: Blogs[] }) {
   return (
     <section className="flex w-full flex-col items-center justify-center gap-8">
       {posts.map((data) => (

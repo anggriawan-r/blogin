@@ -37,8 +37,12 @@ export default function BlogListClient({
 
   return (
     <div className="flex w-full flex-col items-center gap-8 lg:w-2/3">
-      <BlogList posts={data.posts} />
-      <Pagination limit={limit} count={data.count} page={page} />
+      {data && (
+        <>
+          <BlogList posts={data.posts} />
+          <Pagination limit={limit} count={data.count} page={page} />
+        </>
+      )}
     </div>
   );
 }
