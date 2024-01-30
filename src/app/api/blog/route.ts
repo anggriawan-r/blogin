@@ -49,7 +49,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     return NextResponse.json({ posts, count }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { message: "Something went wrong!" },
+      { message: "Something went wrong!", error: error },
       { status: 500 },
     );
   }
