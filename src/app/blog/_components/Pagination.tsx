@@ -2,13 +2,12 @@
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 
 type Props = {
   limit: number;
   count: number;
   page: number;
-  mutate: () => void;
 };
 
 const getPageArray = (count: number, limit: number) => {
@@ -21,7 +20,7 @@ const getPageArray = (count: number, limit: number) => {
   return pageNumber;
 };
 
-export default function Pagination({ limit, count, page, mutate }: Props) {
+export default function Pagination({ limit, count, page }: Props) {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -34,21 +33,18 @@ export default function Pagination({ limit, count, page, mutate }: Props) {
     const searchParams = new URLSearchParams(params);
     searchParams.set("page", (page - 1).toString());
     router.push(`/blog?${searchParams.toString()}`);
-    mutate();
   };
 
   const handleNext = () => {
     const searchParams = new URLSearchParams(params);
     searchParams.set("page", (page + 1).toString());
     router.push(`/blog?${searchParams.toString()}`);
-    mutate();
   };
 
   const handlePageNumber = (data: number) => {
     const searchParams = new URLSearchParams(params);
     searchParams.set("page", data.toString());
     router.push(`/blog?${searchParams.toString()}`);
-    mutate();
   };
 
   return (
