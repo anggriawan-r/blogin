@@ -4,7 +4,7 @@ import { BlogType } from "@/libs/types";
 import React from "react";
 
 export default async function BlogList() {
-  const data: BlogType[] = await getBlogs(1);
+  const data: BlogType[] = await getBlogs({page: 1});
 
   return (
     <>
