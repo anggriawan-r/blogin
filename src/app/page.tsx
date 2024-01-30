@@ -8,17 +8,15 @@ import { getCategories } from "@/libs/getCategories";
 import { getBlogs } from "@/libs/getBlogs";
 import dynamic from "next/dynamic";
 import useSWR from "swr";
-const CategorySlider = dynamic(() => import("@/components/CategorySlider"), {
-  ssr: false,
-});
+import CategorySlider from "@/components/CategorySlider";
 
 export default function Home() {
   const { data: categories, isLoading: loadingCategories } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/category?limit=12`,
+    `/api/category?limit=12`,
     getCategories,
   );
   const { data, isLoading: loadingBlog } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/blog?limit=12`,
+    `/api/blog?limit=12`,
     getBlogs,
   );
 
