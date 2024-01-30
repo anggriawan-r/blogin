@@ -9,6 +9,7 @@ export type BlogType = {
   views: number;
   userEmail: string;
   comments?: string[];
+  categoryId: string;
   user: {
     id: string;
     name: string;

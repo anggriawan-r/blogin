@@ -27,7 +27,7 @@ export default function MyBlog() {
   return (
     <section
       id="blog"
-      className="container mt-24 flex flex-col items-center justify-center gap-16"
+      className="container mx-auto mt-12 flex flex-col items-center justify-center gap-16"
     >
       <h1 className="text-center text-3xl font-bold">My Blog</h1>
       <div className="grid grid-cols-1 gap-x-6 gap-y-16 px-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-x-12">

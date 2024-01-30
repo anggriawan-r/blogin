@@ -39,3 +39,13 @@ a {
     @apply cursor-not-allowed text-gray-900/20;
   }
 }
+
+.myScrollBar {
+  bottom: 0px !important;
+}
+
+.swiper {
+  overflow: visible !important;
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
+}

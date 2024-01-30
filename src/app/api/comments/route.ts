@@ -12,7 +12,6 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
       },
       include: { user: true },
     });
-    NextResponse.next().cookies.getAll();
     return new NextResponse(JSON.stringify(comments), { status: 200 });
   } catch (error) {
     return new NextResponse(

@@ -3,12 +3,8 @@ import { getBlogs } from "@/libs/getBlogs";
 import { BlogType } from "@/libs/types";
 import React from "react";
 
-export default async function UserBlog({
-  params,
-}: {
-  params: { uid: string };
-}) {
-  const data: BlogType[] = await getBlogs(1, params.uid);
+export default async function UserBlog({ params }: { params: { id: string } }) {
+  const data: BlogType[] = await getBlogs(12, 1, params.id);
 
   return (
     <section className="container my-24 flex flex-col gap-16">

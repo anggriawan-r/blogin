@@ -9,7 +9,7 @@ export default function Blog({ content }: { content: BlogType }) {
 
   return (
     <div className="flex h-max w-full items-start gap-4">
-      <div className="relative h-36 w-1/3 shrink-0 grow-[1] overflow-hidden rounded-lg sm:h-40">
+      <div className="relative h-24 w-1/3 shrink grow-0 overflow-hidden rounded-lg sm:h-36">
         <Link href={`/blog/${content.slug}`}>
           <Image
             src={content.image as string}
@@ -28,6 +28,7 @@ export default function Blog({ content }: { content: BlogType }) {
                 src={content.user.image as string}
                 alt="User image"
                 fill
+                sizes="(min-width: 1024px) 33vw, 25vw"
                 className="absolute object-cover"
               />
             </Link>
@@ -46,16 +47,19 @@ export default function Blog({ content }: { content: BlogType }) {
             {content.title}
           </h3>
         </Link>
-        <p className="softTextColor line-clamp-2 overflow-ellipsis text-sm leading-tight sm:text-sm">
+        <p className="softTextColor hidden overflow-ellipsis text-sm leading-tight sm:line-clamp-2 sm:text-sm">
           {content.abstract}
         </p>
         <div className="flex items-center gap-4">
           <p className="softTextColor text-xs sm:text-sm">
             {day} {month}, {year}
           </p>
-          <p className="not-prose flex h-max items-center rounded-md bg-gray-200 px-2 py-1 text-center text-xs leading-none sm:text-sm">
+          <Link
+            href={`/category/${content.Category.slug}`}
+            className="not-prose rounded-md bg-gray-200 px-2 py-1 text-xs transition hover:bg-orange-500/20 hover:text-orange-600"
+          >
             {content.Category.title}
-          </p>
+          </Link>
         </div>
       </div>
     </div>

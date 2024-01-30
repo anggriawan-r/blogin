@@ -6,13 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FiLogIn } from "react-icons/fi";
-import { Merriweather } from "next/font/google";
+import { MerriweatherDisplay } from "@/libs/merriweather";
 import hero from "/public/heroImage.webp";
-
-const playfairDisplay = Merriweather({
-  subsets: ["latin"],
-  weight: ["300", "400", "700"],
-});
 
 export default function Hero() {
   const { status } = useSession();
@@ -42,20 +37,12 @@ export default function Hero() {
   }
 
   return (
-    <section className="container">
-      <figure className="absolute left-0 top-0 -z-10 h-[80svh] w-screen sm:h-[70svh]">
-        <Image
-          src={hero}
-          alt="Hero Image"
-          fill
-          className="absolute object-cover"
-        />
-        <div className="h-full w-full bg-white/80 backdrop-opacity-100"></div>
-      </figure>
-
-      <div className="flex h-[80svh] w-full flex-col items-center justify-center gap-8 px-4 pt-16 sm:h-[70svh] sm:w-3/4 md:w-1/2">
+    <section className="relative flex h-[60svh] min-h-[400px] w-full items-center">
+      <div className="flex w-full flex-col items-start gap-8 px-4 sm:w-3/4 sm:px-6 md:w-1/2 md:px-12">
         <div className="flex flex-col gap-5">
-          <h1 className={`${playfairDisplay.className} text-5xl sm:text-6xl`}>
+          <h1
+            className={`${MerriweatherDisplay.className} text-5xl sm:text-6xl`}
+          >
             Share & find ideas.
           </h1>
           <h2 className="text-base font-medium sm:text-xl">
@@ -64,11 +51,11 @@ export default function Hero() {
           </h2>
         </div>
 
-        <div className="flex flex-col gap-2 self-start sm:flex-row sm:gap-4">
+        <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
           {
             <Link
               href={status === "unauthenticated" ? "/login" : "/write"}
-              className="flex items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-3 text-sm font-medium text-white"
+              className="flex items-center justify-center gap-2 rounded-lg bg-gray-800 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-gray-900"
             >
               {writeButton()}
             </Link>
@@ -77,13 +64,23 @@ export default function Hero() {
           <Link
             href="/blog"
             scroll
-            className="flex items-center justify-center gap-2 rounded-lg border border-gray-900 bg-white px-4 py-3 text-sm font-medium text-gray-900"
+            className="flex items-center justify-center gap-2 rounded-lg border border-gray-900 bg-white px-4 py-3 text-sm font-medium text-gray-900 transition-colors hover:bg-gray-900 hover:text-white"
           >
             Explore Blog
           </Link>
         </div>
       </div>
-      <hr className="absolute left-0 h-[2px] w-screen bg-black" />
+
+      <div className="absolute inset-x-0 top-0 -z-20 h-[60svh] min-h-[400px] w-full">
+        <Image
+          src={hero}
+          alt="Hero Image"
+          fill
+          className="absolute object-cover"
+        />
+      </div>
+      <div className="absolute inset-x-0 top-0 -z-10 h-[60svh] min-h-[400px] w-full bg-white/80 backdrop-opacity-100"></div>
+      <hr className="inset-x-0-0 absolute bottom-0 h-[2px] w-full bg-black" />
     </section>
   );
 }

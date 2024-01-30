@@ -1,11 +1,11 @@
 export const fetcher = async (url: string) => {
   const res = await fetch(url);
-  const data = await res.json();
 
   if (!res.ok) {
-    const error = new Error(data.message);
+    const error = new Error("Failed to fetch data!");
     throw error;
   }
 
+  const data = await res.json();
   return data;
 };

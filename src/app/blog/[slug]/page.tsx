@@ -16,7 +16,7 @@ export default async function PostPage({
   const { day, month, year } = getDateFromDB(data);
 
   return (
-    <section className="container my-20 flex flex-col items-center justify-center gap-10 px-4 md:max-w-screen-md">
+    <section className="container mx-auto my-12 flex flex-col items-center justify-center gap-10 px-4 md:max-w-screen-md">
       <div className="flex w-full flex-col gap-4">
         <div className="relative h-[25vh] w-full sm:h-[40vh]">
           <Image

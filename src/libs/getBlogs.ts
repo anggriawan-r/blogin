@@ -1,10 +1,22 @@
-export const getBlogs = async (
-  limit: number = 12,
-  page: number = 1,
-  id: string = "",
-) => {
+type Props = {
+  id?: string;
+  limit?: number;
+  page?: number;
+  category?: string;
+  sort?: "asc" | "desc";
+};
+
+export const getBlogs = async ({ id, limit, page, category, sort }: Props) => {
+  const params = new URLSearchParams();
+
+  if (id) params.append("id", id);
+  if (limit) params.append("limit", limit.toString());
+  if (page) params.append("page", page.toString());
+  if (category) params.append("category", category.toString());
+  if (sort) params.append("sort", sort.toString());
+
   const res = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/blog?limit=${limit}&page=${page}&id=${id}`,
+    `${process.env.NEXTAUTH_URL}/api/blog?${params.toString()}`,
     {
       cache: "no-store",
     },

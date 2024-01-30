@@ -13,6 +13,7 @@ type InputType = {
   body: string;
   image?: string;
   slug: string;
+  category: string;
 };
 
 const storage = getStorage(app);
@@ -49,6 +50,7 @@ const fetcher = async (data: InputType, downloadUrl: string) => {
       abstract: data.abstract,
       image: downloadUrl,
       slug: slugify(data.title).toLowerCase(),
+      categoryId: data.category,
     }),
   });
 
