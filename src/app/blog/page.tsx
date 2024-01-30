@@ -8,7 +8,6 @@ import Sorter from "@/components/Sorter";
 const CategorySlider = dynamic(() => import("@/components/CategorySlider"), {
   ssr: false,
 });
-export const runtime = "edge";
 
 type Props = {
   searchParams: string;
