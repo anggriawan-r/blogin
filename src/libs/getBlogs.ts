@@ -7,16 +7,6 @@
 // };
 
 export const getBlogs = async (url: string) => {
-  // const params = new URLSearchParams();
-
-  // if (id) params.append("id", id);
-  // if (limit) params.append("limit", limit.toString());
-  // if (page) params.append("page", page.toString());
-  // if (category) params.append("category", category.toString());
-  // if (sort) params.append("sort", sort.toString());
-
-  // const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
   const res = await fetch(url, {
     cache: "no-store",
   });

@@ -41,7 +41,7 @@ export default function BlogPage({ searchParams }: Props) {
       <Sorter />
       <div className="flex gap-12">
         <BlogListClient page={page} limit={2} sort={sort} />
-        <Aside categories={categories} />
+        {categories && <Aside categories={categories} />}
       </div>
     </div>
   );

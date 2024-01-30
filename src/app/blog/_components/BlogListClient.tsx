@@ -22,10 +22,6 @@ export default function BlogListClient({
   category,
   sort,
 }: Props) {
-  // const { posts, count }: { posts: BlogType[]; count: number } = getBlogs(
-  //   { id, limit, page, category, sort },
-  // );
-
   const params = new URLSearchParams();
 
   if (id) params.append("id", id);
