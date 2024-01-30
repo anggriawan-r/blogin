@@ -15,12 +15,10 @@ export const getBlogs = async ({ id, limit, page, category, sort }: Props) => {
   if (category) params.append("category", category.toString());
   if (sort) params.append("sort", sort.toString());
 
-  const res = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/blog?${params.toString()}`,
-    {
-      cache: "no-store",
-    },
-  );
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const res = await fetch(`${apiUrl}/api/blog?${params.toString()}`, {
+    cache: "no-store",
+  });
 
   if (!res.ok) {
     throw new Error("Failed to fetch data!");
