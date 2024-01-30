@@ -3,7 +3,6 @@ import React from "react";
 import Pagination from "./Pagination";
 import { BlogType } from "@/libs/types";
 import { getBlogs } from "@/libs/getBlogs";
-import Sorter from "@/components/Sorter";
 
 type Props = {
   id?: string;
