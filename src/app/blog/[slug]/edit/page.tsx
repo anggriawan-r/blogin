@@ -37,7 +37,7 @@ export default function EditPage({ params }: { params: { slug: string } }) {
   const { status } = useSession();
 
   const { data, isLoading, error } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/edit/${params.slug}`,
+    `/api/edit/${params.slug}`,
     getPost,
   );
 

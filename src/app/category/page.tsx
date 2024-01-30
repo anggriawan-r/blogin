@@ -8,7 +8,7 @@ import useSWR from "swr";
 
 export default function CategoryPage() {
   const { data: categories, isLoading: loadingCategories } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/category`,
+    `/api/category`,
     getCategories,
   );
 

@@ -1,6 +1,5 @@
 export const getBlog = async (slug: string) => {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const res = await fetch(`${apiUrl}/api/blog/${slug}`, {
+  const res = await fetch(`/api/blog/${slug}`, {
     cache: "no-store",
   });
 

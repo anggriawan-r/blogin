@@ -8,7 +8,7 @@ import useSWR from "swr";
 
 export default function BlogList() {
   const { data, isLoading: loadingBlog } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/blog?limit=12`,
+    `/api/blog?limit=12`,
     getBlogs,
   );
 
