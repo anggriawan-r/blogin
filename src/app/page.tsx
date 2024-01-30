@@ -22,8 +22,6 @@ export default function Home() {
     getBlogs,
   );
 
-  console.log(data);
-
   return (
     <main className="mx-auto">
       <Hero />

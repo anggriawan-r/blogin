@@ -27,7 +27,7 @@ export type Blogs = {
   userEmail: string;
   categoryId: string;
   user: User;
-  category: Category;
+  Category: Category;
 };
 
 export type BlogsProps = {

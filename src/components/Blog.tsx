@@ -1,4 +1,4 @@
-import { Blogs, User, Category } from "@/libs/getBlogs";
+import { Blogs } from "@/libs/getBlogs";
 import { getDateFromDB } from "@/libs/getDateFromDB";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,7 +23,7 @@ export default function Blog({ content }: { content: Blogs }) {
       <div className="prose prose-sm w-2/3 shrink-[1] lg:prose-base prose-headings:my-1 prose-headings:font-bold prose-p:my-2">
         <div className="not-prose mb-2 flex items-center gap-2">
           <div className="relative h-5 w-5 overflow-hidden rounded-full">
-            <Link href={`/user/${content.user}/blog`}>
+            <Link href={`/user/${content.user.id}/blog`}>
               <Image
                 src={content.user.image as string}
                 alt="User image"
@@ -55,10 +55,10 @@ export default function Blog({ content }: { content: Blogs }) {
             {day} {month}, {year}
           </p>
           <Link
-            href={`/category/${content.category.slug}`}
+            href={`/category/${content.Category.slug}`}
             className="not-prose rounded-md bg-gray-200 px-2 py-1 text-xs transition hover:bg-orange-500/20 hover:text-orange-600"
           >
-            {content.category.title}
+            {content.Category.title}
           </Link>
         </div>
       </div>
