@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 const CategorySlider = dynamic(() => import("@/components/CategorySlider"), {
   ssr: false,
 });
+export const runtime = "edge";
 
 export default async function Home() {
   const categories = await getCategories(10);
