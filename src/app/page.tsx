@@ -14,11 +14,11 @@ const CategorySlider = dynamic(() => import("@/components/CategorySlider"), {
 
 export default function Home() {
   const { data: categories, isLoading: loadingCategories } = useSWR(
-    `/api/category?limit=12`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/category?limit=12`,
     getCategories,
   );
   const { data, isLoading: loadingBlog } = useSWR(
-    `/api/blog?limit=12`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/blog?limit=12`,
     getBlogs,
   );
 
