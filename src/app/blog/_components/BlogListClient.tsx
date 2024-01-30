@@ -3,7 +3,6 @@
 import BlogList from "@/components/BlogList";
 import React from "react";
 import Pagination from "./Pagination";
-import { BlogType } from "@/libs/types";
 import { getBlogs } from "@/libs/getBlogs";
 import useSWR from "swr";
 

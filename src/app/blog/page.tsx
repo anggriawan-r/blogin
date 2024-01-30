@@ -4,7 +4,6 @@ import Aside from "@/components/Aside";
 import React from "react";
 import { getCategories } from "@/libs/getCategories";
 import BlogListClient from "./_components/BlogListClient";
-import { URLSearchParams } from "url";
 import dynamic from "next/dynamic";
 import Sorter from "@/components/Sorter";
 import useSWR from "swr";
