@@ -178,7 +178,7 @@ export default function EditPage({ params }: { params: { slug: string } }) {
               placeholder="Title..."
               id="title"
               maxRows={4}
-              className="w-full resize-none overscroll-contain border-none p-2 text-2xl font-bold placeholder-gray-300 outline-none sm:text-3xl md:text-5xl"
+              className="w-full resize-none overscroll-contain border-none bg-gray-50 p-2 text-2xl font-bold placeholder-gray-300 outline-none sm:text-3xl md:text-5xl"
             />
             {errors.title && isDirty && (
               <p className="-mt-6 ml-2 text-red-500">{errors.title.message}</p>
@@ -191,7 +191,7 @@ export default function EditPage({ params }: { params: { slug: string } }) {
               placeholder="Introduction..."
               maxRows={20}
               id="introduction"
-              className="prose w-full max-w-none resize-none overscroll-contain border-none p-2 leading-tight placeholder-gray-400 outline-none lg:prose-lg"
+              className="prose w-full max-w-none resize-none overscroll-contain border-none bg-gray-50 p-2 leading-tight placeholder-gray-400 outline-none lg:prose-lg"
             />
             {errors.abstract && isDirty && (
               <p className="-mt-6 ml-2 text-red-500">

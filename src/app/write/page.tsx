@@ -7,16 +7,17 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { ImageIcon, Loader2 } from "lucide-react";
-import { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import slugify from "slugify";
 import { uploadBlog } from "./_libs/uploadBlog";
+import useSWR from "swr";
 
 type InputType = {
   title: string;
   abstract: string;
   body: string;
   image?: string;
+  category: string;
 };
 
 export default function WritePage() {
@@ -25,6 +26,12 @@ export default function WritePage() {
   const [slug, setSlug] = useState<string>();
   const [isImageAdded, setIsImageAdded] = useState<boolean>(false);
   const { status } = useSession();
+  const { data, isLoading } = useSWR(`/api/category`, async (url: string) => {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Error");
+    const data = await res.json();
+    return data;
+  });
 
   const {
     register,
@@ -59,6 +66,7 @@ export default function WritePage() {
       title: data.title,
       abstract: data.abstract,
       slug: slugify(data.title).toLowerCase(),
+      category: data.category,
     });
   };
 
@@ -67,9 +75,7 @@ export default function WritePage() {
   }
 
   return (
-    <section className="container my-[64px] flex w-full flex-col items-center justify-center px-4 lg:max-w-screen-lg">
-      <Toaster />
-
+    <div className="container mx-auto mt-16 flex w-full flex-col items-center justify-center px-4 lg:max-w-screen-lg">
       <div className="my-12 flex w-full flex-col gap-8 self-start">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
           <input
@@ -121,7 +127,7 @@ export default function WritePage() {
             placeholder="Title..."
             id="title"
             maxRows={4}
-            className="w-full resize-none overscroll-contain border-none p-2 text-2xl font-bold placeholder-gray-300 outline-none sm:text-3xl md:text-5xl"
+            className="w-full resize-none overscroll-contain border-none bg-gray-50 p-2 text-2xl font-bold placeholder-gray-300 outline-none sm:text-3xl md:text-5xl"
           />
           {errors.title && isDirty && (
             <p className="-mt-6 ml-2 text-red-500">{errors.title.message}</p>
@@ -132,11 +138,24 @@ export default function WritePage() {
             placeholder="Introduction..."
             maxRows={20}
             id="introduction"
-            className="prose w-full max-w-none resize-none overscroll-contain border-none p-2 leading-tight placeholder-gray-400 outline-none lg:prose-lg"
+            className="prose w-full max-w-none resize-none overscroll-contain border-none bg-gray-50 p-2 leading-tight placeholder-gray-400 outline-none lg:prose-lg"
           />
           {errors.abstract && isDirty && (
             <p className="-mt-6 ml-2 text-red-500">{errors.abstract.message}</p>
           )}
+
+          <select
+            id="category"
+            className="max-w-sm"
+            {...register("category", { required: "Category is required" })}
+          >
+            {!isLoading &&
+              data.map((d: any) => (
+                <option key={d.id} value={d.id}>
+                  {d.title}
+                </option>
+              ))}
+          </select>
 
           <Controller
             render={({ field }) => (
@@ -164,6 +183,6 @@ export default function WritePage() {
           </button>
         </form>
       </div>
-    </section>
+    </div>
   );
 }

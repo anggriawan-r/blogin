@@ -1,5 +1,5 @@
 export const getBlog = async (slug: string) => {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/blog/${slug}`, {
+  const res = await fetch(`/api/blog/${slug}`, {
     cache: "no-store",
   });
 

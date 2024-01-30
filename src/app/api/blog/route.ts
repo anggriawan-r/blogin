@@ -1,28 +1,55 @@
 import prisma from "@/utils/connect";
+import { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
   const { searchParams } = new URL(req.url);
-  const uid = searchParams.get("uid");
-  const page = searchParams.get("page") as string;
+  const id = searchParams.get("id");
+  const page = searchParams.get("page");
+  const limit = searchParams.get("limit");
+  const category = searchParams.get("category");
+  const sort = searchParams.get("sort");
 
-  const POST_PER_PAGE = 12;
+  const sortFn = (sort: Prisma.SortOrder | string | null) => {
+    if (sort === "asc") return "asc";
+
+    if (sort === "desc") return "desc";
+
+    return "desc";
+  };
+
+  const POST_PER_PAGE = parseInt(limit || "12");
+  const BLOG_PAGE = parseInt(page || "1");
+  const SORT_PAGE = sortFn(sort);
 
   try {
     const posts = await prisma.post.findMany({
       take: POST_PER_PAGE,
-      skip: POST_PER_PAGE * (parseInt(page) - 1),
+      skip: POST_PER_PAGE * (BLOG_PAGE - 1),
       where: {
-        ...(uid && { user: { id: uid } }),
+        ...(id && { user: { id: id } }),
+        ...(category && { Category: { slug: category } }),
       },
       include: {
         user: true,
+        Category: true,
+      },
+      orderBy: [
+        {
+          createdAt: SORT_PAGE,
+        },
+      ],
+    });
+    const count = await prisma.post.count({
+      where: {
+        ...(id && { user: { id: id } }),
+        ...(category && { Category: { slug: category } }),
       },
     });
-    return new NextResponse(JSON.stringify(posts), { status: 200 });
+    return NextResponse.json({ posts, count }, { status: 200 });
   } catch (error) {
-    return new NextResponse(
-      JSON.stringify({ message: "Something went wrong!" }),
+    return NextResponse.json(
+      { message: "Something went wrong!" },
       { status: 500 },
     );
   }

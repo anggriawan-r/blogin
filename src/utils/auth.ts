@@ -21,6 +21,9 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.FACEBOOK_SECRET as string,
     }),
   ],
+  pages: {
+    signIn: "/login",
+  },
 };
 
 export const getAuthSession = () => getServerSession(authOptions);

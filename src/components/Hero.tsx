@@ -6,6 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FiLogIn } from "react-icons/fi";
+import { MerriweatherDisplay } from "@/libs/merriweather";
+import hero from "/public/heroImage.webp";
 
 export default function Hero() {
   const { status } = useSession();
@@ -35,50 +37,50 @@ export default function Hero() {
   }
 
   return (
-    <section className="container flex h-screen items-center justify-center px-4">
-      <div className="flex h-[75vh] w-full flex-col gap-5 sm:flex-row sm:gap-8 md:gap-10 lg:gap-16">
-        <div className="relative h-full w-full bg-white/50 py-4 sm:shrink-[1] sm:grow-[2]">
-          <Image
-            src="https://images.pexels.com/photos/161275/santorini-travel-holidays-vacation-161275.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt="Hero Image"
-            quality={90}
-            fill
-            className="absolute rounded-lg object-cover"
-          />
+    <section className="relative flex h-[60svh] min-h-[400px] w-full items-center">
+      <div className="flex w-full flex-col items-start gap-8 px-4 sm:w-3/4 sm:px-6 md:w-1/2 md:px-12">
+        <div className="flex flex-col gap-5">
+          <h1
+            className={`${MerriweatherDisplay.className} text-5xl sm:text-6xl`}
+          >
+            Share & find ideas.
+          </h1>
+          <h2 className="text-base font-medium sm:text-xl">
+            Explore new ideas, perspectives, and experiences from anyone on any
+            topic.
+          </h2>
         </div>
 
-        <div className="flex flex-col items-center justify-center gap-8 sm:shrink-[2] sm:grow-[1]">
-          <div className="flex flex-col gap-5">
-            <h1 className="textColor text-center text-3xl font-semibold sm:text-left sm:text-4xl md:text-5xl">
-              Publish your writing.
-            </h1>
-            <h2 className="softTextColor text-center sm:text-left sm:text-lg lg:text-xl">
-              Blogin is not just an ordinary blogging platform. Blogin is also a
-              container for a community of writers, readers, and fans who like
-              to explore new ideas, perspectives, and experiences.
-            </h2>
-          </div>
-
-          <div className="flex flex-col gap-4 sm:self-start lg:flex-row">
-            {
-              <Link
-                href={status === "unauthenticated" ? "/login" : "/write"}
-                className="btn flex items-center justify-center gap-2 rounded-lg bg-gray-900 py-4 text-sm text-white transition-all hover:scale-105 sm:self-start sm:px-5"
-              >
-                {writeButton()}
-              </Link>
-            }
-
+        <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
+          {
             <Link
-              href="#blog"
-              scroll
-              className="btn flex items-center justify-center gap-2 rounded-lg border border-gray-950 bg-white py-4 text-sm text-gray-900 transition-all hover:scale-105 sm:self-start sm:px-5"
+              href={status === "unauthenticated" ? "/login" : "/write"}
+              className="flex items-center justify-center gap-2 rounded-lg bg-gray-800 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-gray-900"
             >
-              Explore Blog
+              {writeButton()}
             </Link>
-          </div>
+          }
+
+          <Link
+            href="/blog"
+            scroll
+            className="flex items-center justify-center gap-2 rounded-lg border border-gray-900 bg-white px-4 py-3 text-sm font-medium text-gray-900 transition-colors hover:bg-gray-900 hover:text-white"
+          >
+            Explore Blog
+          </Link>
         </div>
       </div>
+
+      <div className="absolute inset-x-0 top-0 -z-20 h-[60svh] min-h-[400px] w-full">
+        <Image
+          src={hero}
+          alt="Hero Image"
+          fill
+          className="absolute object-cover"
+        />
+      </div>
+      <div className="absolute inset-x-0 top-0 -z-10 h-[60svh] min-h-[400px] w-full bg-white/80 backdrop-opacity-100"></div>
+      <hr className="inset-x-0-0 absolute bottom-0 h-[2px] w-full bg-black" />
     </section>
   );
 }

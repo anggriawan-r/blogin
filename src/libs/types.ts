@@ -9,12 +9,20 @@ export type BlogType = {
   views: number;
   userEmail: string;
   comments?: string[];
+  categoryId: string;
   user: {
     id: string;
     name: string;
     email: string;
     emailVerfied?: string;
     image?: string;
+  };
+  Category: {
+    id: string;
+    slug: string;
+    title: string;
+    img?: string;
+    Posts: BlogType[];
   };
 };
 

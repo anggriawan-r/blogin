@@ -55,17 +55,19 @@ model VerificationToken {
 }
 
 model Post {
-  id        String    @id @default(cuid()) @map("_id")
-  createdAt DateTime  @default(now())
-  slug      String    @unique
-  title     String
-  abstract  String
-  body      String
-  image     String?
-  views     Int       @default(0)
-  userEmail String
-  user      User      @relation(fields: [userEmail], references: [email])
-  comments  Comment[]
+  id         String    @id @default(cuid()) @map("_id")
+  createdAt  DateTime  @default(now())
+  slug       String    @unique
+  title      String
+  abstract   String
+  body       String
+  image      String?
+  views      Int       @default(0)
+  userEmail  String
+  user       User      @relation(fields: [userEmail], references: [email])
+  comments   Comment[]
+  Category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId String?
 }
 
 model Comment {
@@ -76,4 +78,12 @@ model Comment {
   user      User     @relation(fields: [userEmail], references: [email])
   postSlug  String
   post      Post     @relation(fields: [postSlug], references: [slug])
+}
+
+model Category {
+  id    String  @id @default(cuid()) @map("_id")
+  slug  String  @unique
+  title String
+  img   String?
+  Posts Post[]
 }
