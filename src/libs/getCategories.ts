@@ -1,8 +1,12 @@
 import prisma from "@/utils/connect";
 
-export const getCategories = async (limit?: number) => {
-  const res = await prisma.category.findMany({
-    take: limit,
-  });
-  return res;
+export const getCategories = async (url: string) => {
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data!");
+  }
+
+  const data = await res.json();
+  return data;
 };

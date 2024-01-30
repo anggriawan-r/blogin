@@ -1,22 +1,23 @@
-type Props = {
-  id?: string;
-  limit?: number;
-  page?: number;
-  category?: string;
-  sort?: "asc" | "desc";
-};
+// type Props = {
+//   id?: string;
+//   limit?: number;
+//   page?: number;
+//   category?: string;
+//   sort?: "asc" | "desc";
+// };
 
-export const getBlogs = async ({ id, limit, page, category, sort }: Props) => {
-  const params = new URLSearchParams();
+export const getBlogs = async (url: string) => {
+  // const params = new URLSearchParams();
 
-  if (id) params.append("id", id);
-  if (limit) params.append("limit", limit.toString());
-  if (page) params.append("page", page.toString());
-  if (category) params.append("category", category.toString());
-  if (sort) params.append("sort", sort.toString());
+  // if (id) params.append("id", id);
+  // if (limit) params.append("limit", limit.toString());
+  // if (page) params.append("page", page.toString());
+  // if (category) params.append("category", category.toString());
+  // if (sort) params.append("sort", sort.toString());
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const res = await fetch(`${apiUrl}/api/blog?${params.toString()}`, {
+  // const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  const res = await fetch(url, {
     cache: "no-store",
   });
 

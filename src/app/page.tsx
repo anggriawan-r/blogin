@@ -1,3 +1,5 @@
+"use client";
+
 import Aside from "@/components/Aside";
 import BlogList from "@/components/BlogList";
 import Hero from "@/components/Hero";
@@ -5,13 +7,22 @@ import Link from "next/link";
 import { getCategories } from "@/libs/getCategories";
 import { getBlogs } from "@/libs/getBlogs";
 import dynamic from "next/dynamic";
+import useSWR from "swr";
 const CategorySlider = dynamic(() => import("@/components/CategorySlider"), {
   ssr: false,
 });
 
-export default async function Home() {
-  const categories = await getCategories(10);
-  const { posts } = await getBlogs({});
+export default function Home() {
+  const { data: categories, isLoading: loadingCategories } = useSWR(
+    `/api/category?limit=12`,
+    getCategories,
+  );
+  const { data, isLoading: loadingBlog } = useSWR(
+    `/api/blog?limit=12`,
+    getBlogs,
+  );
+
+  console.log(data);
 
   return (
     <main className="mx-auto">
@@ -21,7 +32,7 @@ export default async function Home() {
 
         <div className="mt-12 max-w-7xl lg:flex lg:gap-12">
           <div className="flex w-full flex-col items-center lg:w-2/3">
-            <BlogList posts={posts} />
+            {data && <BlogList posts={data.posts} />}
             <Link
               href="/blog"
               className="my-12 w-[240px] rounded-lg border border-gray-900 bg-white py-2 text-center font-semibold text-gray-900 transition hover:bg-gray-900 hover:text-white"
@@ -29,7 +40,7 @@ export default async function Home() {
               Load more
             </Link>
           </div>
-          <Aside categories={categories} />
+          {categories && <Aside categories={categories} />}
         </div>
       </section>
     </main>
