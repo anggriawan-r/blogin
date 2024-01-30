@@ -11,7 +11,7 @@ const CategorySlider = dynamic(() => import("@/components/CategorySlider"), {
 
 export default async function Home() {
   const categories = await getCategories(10);
-  const { posts } = await getBlogs({});
+  // const { posts } = await getBlogs({});
 
   return (
     <main className="mx-auto">
@@ -21,7 +21,7 @@ export default async function Home() {
 
         <div className="mt-12 max-w-7xl lg:flex lg:gap-12">
           <div className="flex w-full flex-col items-center lg:w-2/3">
-            <BlogList posts={posts} />
+            {/* <BlogList posts={posts} /> */}
             <Link
               href="/blog"
               className="my-12 w-[240px] rounded-lg border border-gray-900 bg-white py-2 text-center font-semibold text-gray-900 transition hover:bg-gray-900 hover:text-white"
