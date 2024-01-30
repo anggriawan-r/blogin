@@ -7,7 +7,7 @@ import useSWR from "swr";
 
 export default function UserBlog({ params }: { params: { id: string } }) {
   const { data, isLoading: loadingBlog } = useSWR(
-    `/api/blog?id=${params.id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/blog?id=${params.id}`,
     getBlogs,
   );
 

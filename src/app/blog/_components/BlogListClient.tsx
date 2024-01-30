@@ -30,7 +30,7 @@ export default function BlogListClient({
   if (sort) params.append("sort", sort.toString());
 
   const { data, isLoading: loadingBlog } = useSWR(
-    `/api/blog?${params}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/blog?${params}`,
     getBlogs,
   );
 

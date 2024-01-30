@@ -18,7 +18,10 @@ export default function MyBlog() {
     redirect("/login");
   }
 
-  const { data, isLoading, mutate } = useSWR("/api/myblog", fetcher);
+  const { data, isLoading, mutate } = useSWR(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/myblog`,
+    fetcher,
+  );
 
   const handleModal = () => {
     setShowModal(!showModal);

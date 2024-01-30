@@ -14,7 +14,7 @@ export default function BlogCategory({ params }: { params: Props }) {
   const cat = category.charAt(0).toUpperCase() + category.slice(1);
 
   const { data, isLoading } = useSWR(
-    `/api/blog?category=${category}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/blog?category=${category}`,
     getBlogs,
   );
 

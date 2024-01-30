@@ -26,12 +26,15 @@ export default function WritePage() {
   const [slug, setSlug] = useState<string>();
   const [isImageAdded, setIsImageAdded] = useState<boolean>(false);
   const { status } = useSession();
-  const { data, isLoading } = useSWR("/api/category", async (url: string) => {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("Error");
-    const data = await res.json();
-    return data;
-  });
+  const { data, isLoading } = useSWR(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/category`,
+    async (url: string) => {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("Error");
+      const data = await res.json();
+      return data;
+    },
+  );
 
   const {
     register,

@@ -21,7 +21,7 @@ export default function BlogPage({ searchParams }: Props) {
   const sortParams = new URLSearchParams(searchParams).get("sort");
 
   const { data: categories, isLoading: loadingCategories } = useSWR(
-    `/api/category?limit=10`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/category?limit=10`,
     getCategories,
   );
 

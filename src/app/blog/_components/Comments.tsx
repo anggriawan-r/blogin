@@ -14,7 +14,7 @@ export default function Comments({ blogSlug }: { blogSlug: string }) {
   const { data: session, status } = useSession();
 
   const { data, isLoading, mutate } = useSWR(
-    `/api/comments?blogSlug=${blogSlug}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/comments?blogSlug=${blogSlug}`,
     getComments,
   );
 
