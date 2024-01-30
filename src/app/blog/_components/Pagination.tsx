@@ -8,6 +8,7 @@ type Props = {
   limit: number;
   count: number;
   page: number;
+  mutate: () => void;
 };
 
 const getPageArray = (count: number, limit: number) => {
@@ -20,7 +21,7 @@ const getPageArray = (count: number, limit: number) => {
   return pageNumber;
 };
 
-export default function Pagination({ limit, count, page }: Props) {
+export default function Pagination({ limit, count, page, mutate }: Props) {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -33,18 +34,21 @@ export default function Pagination({ limit, count, page }: Props) {
     const searchParams = new URLSearchParams(params);
     searchParams.set("page", (page - 1).toString());
     router.push(`/blog?${searchParams.toString()}`);
+    mutate();
   };
 
   const handleNext = () => {
     const searchParams = new URLSearchParams(params);
     searchParams.set("page", (page + 1).toString());
     router.push(`/blog?${searchParams.toString()}`);
+    mutate();
   };
 
   const handlePageNumber = (data: number) => {
     const searchParams = new URLSearchParams(params);
     searchParams.set("page", data.toString());
     router.push(`/blog?${searchParams.toString()}`);
+    mutate();
   };
 
   return (

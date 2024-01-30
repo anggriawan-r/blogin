@@ -29,17 +29,23 @@ export default function BlogListClient({
   if (category) params.append("category", category.toString());
   if (sort) params.append("sort", sort.toString());
 
-  const { data, isLoading: loadingBlog } = useSWR(
-    `/api/blog?${params}`,
-    getBlogs,
-  );
+  const {
+    data,
+    isLoading: loadingBlog,
+    mutate,
+  } = useSWR(`/api/blog?${params}`, getBlogs);
 
   return (
     <div className="flex w-full flex-col items-center gap-8 lg:w-2/3">
       {data && (
         <>
           <BlogList posts={data.posts} />
-          <Pagination limit={limit} count={data.count} page={page} />
+          <Pagination
+            limit={limit}
+            count={data.count}
+            page={page}
+            mutate={mutate}
+          />
         </>
       )}
     </div>

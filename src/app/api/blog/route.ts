@@ -48,6 +48,9 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     });
     return NextResponse.json({ posts, count }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: error }, { status: 500 });
+    return NextResponse.json(
+      { message: "Something went wrong!" },
+      { status: 500 },
+    );
   }
 };

@@ -6,7 +6,6 @@ import Hero from "@/components/Hero";
 import Link from "next/link";
 import { getCategories } from "@/libs/getCategories";
 import { getBlogs } from "@/libs/getBlogs";
-import dynamic from "next/dynamic";
 import useSWR from "swr";
 import CategorySlider from "@/components/CategorySlider";
 
