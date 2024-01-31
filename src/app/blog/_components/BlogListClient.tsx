@@ -5,6 +5,7 @@ import React from "react";
 import Pagination from "./Pagination";
 import { getBlogs } from "@/libs/getBlogs";
 import useSWR from "swr";
+import { useSearchParams } from "next/navigation";
 
 type Props = {
   id?: string;
@@ -21,16 +22,17 @@ export default function BlogListClient({
   category,
   sort,
 }: Props) {
-  const params = new URLSearchParams();
+  const params = useSearchParams();
+  const searchParams = new URLSearchParams(params);
 
-  if (id) params.append("id", id);
-  if (limit) params.append("limit", limit.toString());
-  if (page) params.append("page", page.toString());
-  if (category) params.append("category", category.toString());
-  if (sort) params.append("sort", sort.toString());
+  if (id) searchParams.append("id", id);
+  if (limit) searchParams.append("limit", limit.toString());
+  if (page) searchParams.append("page", page.toString());
+  if (category) searchParams.append("category", category.toString());
+  if (sort) searchParams.append("sort", sort.toString());
 
   const { data, isLoading: loadingBlog } = useSWR(
-    `/api/blog?${params}`,
+    `/api/blog?${searchParams}`,
     getBlogs,
   );
 
