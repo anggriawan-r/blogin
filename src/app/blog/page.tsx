@@ -7,6 +7,7 @@ import BlogListClient from "./_components/BlogListClient";
 import dynamic from "next/dynamic";
 import Sorter from "@/components/Sorter";
 import useSWR from "swr";
+import { useSearchParams } from "next/navigation";
 const CategorySlider = dynamic(() => import("@/components/CategorySlider"), {
   ssr: false,
 });
@@ -15,10 +16,11 @@ type Props = {
   searchParams: string;
 };
 
-export default function BlogPage({ searchParams }: Props) {
-  const pageParams = new URLSearchParams(searchParams).get("page");
+export default function BlogPage() {
+  const params = useSearchParams();
+  const pageParams = new URLSearchParams(params).get("page");
   const page = parseInt(pageParams || "1");
-  const sortParams = new URLSearchParams(searchParams).get("sort");
+  const sortParams = new URLSearchParams(params).get("sort");
 
   const { data: categories, isLoading: loadingCategories } = useSWR(
     `/api/category?limit=10`,
