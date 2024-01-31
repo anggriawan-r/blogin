@@ -15,6 +15,8 @@ export default async function PostPage({
   const data: BlogType = await getBlog(params.slug);
   const { day, month, year } = getDateFromDB(data);
 
+  console.log(params.slug);
+
   return (
     <section className="container mx-auto my-12 flex flex-col items-center justify-center gap-10 px-4 md:max-w-screen-md">
       <div className="flex w-full flex-col gap-4">
